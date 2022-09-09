@@ -128,4 +128,76 @@ public class TupleTests
         Assert.True(-a == new Tuple { x = -1, y = 2, z = -3, w = 4 }, "Negation of a tuple yields the correct tuple.");
     }
 
+    [Fact]
+    public void MultiplicationOfATupleAndScalar()
+    {
+        Tuple a = new Tuple { x = 1, y = -2, z = 3, w = -4 };
+
+        Tuple result = a * 3.5f;
+
+        Assert.True(result == new Tuple { x = 3.5f, y = -7f, z = 10.5f, w = -14f}, "Multiplication of a tuple and a scalar yields correct tuple.");
+    }
+
+    [Fact]
+    public void DivisionOfATupleAndScalar()
+    {
+        Tuple a = new Tuple { x = 1, y = -2, z = 3, w = -4 };
+
+        Tuple result = a / 2f;
+
+        Assert.True(result == new Tuple { x = 0.5f, y = -1f, z = 1.5f, w = -2f}, "Multiplication of a tuple and a scalar yields correct tuple.");
+    }
+
+    [Fact]
+    public void MagnitudeOfSimpleUnitVector()
+    {
+        var v = Tuple.NewVector(0, 0, 1);
+
+        Assert.True(Tuple.ApproximatelyEqual(v.Magnitude(), 1), "Manitude of a simple unit vector in the z direction is 1.");
+    }
+
+    [Fact]
+    public void MagnitudeOfVector()
+    {
+        var v = Tuple.NewVector(1, 2, 3);
+
+        Assert.True(Tuple.ApproximatelyEqual(v.Magnitude(), (float)Math.Sqrt(14)), "Manitude of a 1, 2, 3 vector yeilds the correct value.");
+    }
+
+    [Fact]
+    public void MagnitudeOfANegativeVector()
+    {
+        var v = Tuple.NewVector(-1, -2, -3);
+
+        Assert.True(Tuple.ApproximatelyEqual(v.Magnitude(), (float)Math.Sqrt(14)), "Manitude of a -1, -2, -3 vector yeilds the correct value.");
+    }
+
+    [Fact]
+    public void NomalizeOfSimpleUnitVector()
+    {
+        var v = Tuple.NewVector(0, 0, 4);
+        var result = v.Normalize();
+
+        Assert.True(result == Tuple.NewVector(0, 0, 1), "Normalization of a vector yields the correct vector.");
+    }
+
+    [Fact]
+    public void NomalizeOfVector()
+    {
+        var v = Tuple.NewVector(1, 2, 3);
+        var result = v.Normalize();
+
+        Assert.True(Tuple.ApproximatelyEqual(result.Magnitude(), 1.0f), "Magnitude of the result of normalization is 1.");
+        Assert.True(result == Tuple.NewVector(0.26726f, 0.53452f, 0.80178f), "Normalization of a vector yields the correct vector.");
+    }
+
+
+    [Fact]
+    public void MagnitudeOfNormalVector()
+    {
+        var v = Tuple.NewVector(1, 2, 3);
+        var result = v.Normalize();
+        Assert.True(Tuple.ApproximatelyEqual(result.Magnitude(), 1.0f), "Magnitude of the result of normalization is 1.");
+    }
+
 }

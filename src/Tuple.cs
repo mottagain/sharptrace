@@ -68,6 +68,38 @@ namespace SharpTrace
             };       
         }
 
+        public static Tuple operator *(Tuple tuple, float scalar)
+        {
+            return new Tuple
+            {
+                x = tuple.x * scalar,
+                y = tuple.y * scalar,
+                z = tuple.z * scalar,
+                w = tuple.w * scalar,
+            };
+        }
+
+        public static Tuple operator /(Tuple tuple, float scalar)
+        {
+            return new Tuple
+            {
+                x = tuple.x / scalar,
+                y = tuple.y / scalar,
+                z = tuple.z / scalar,
+                w = tuple.w / scalar,
+            };
+        }
+
+        public float Magnitude() 
+        {
+            return (float)Math.Sqrt(x * x + y * y + z * z + w * w);
+        }
+
+        public Tuple Normalize() 
+        {
+            return this / Magnitude();
+        }
+
         public bool Equals(Tuple other) {
             return this == other;
         }
@@ -104,13 +136,13 @@ namespace SharpTrace
             return ApproximatelyEqual(w, 0.0f);
         }
 
-        private static bool ApproximatelyEqual(float x, float y)
+        public static bool ApproximatelyEqual(float x, float y)
         {
             var diff = Math.Abs(x - y);
             return diff <= _tolerance ||
                 diff <= Math.Max(Math.Abs(x), Math.Abs(y)) * _tolerance;
         }
 
-        private const float _tolerance = 0.0000000001f;
+        private const float _tolerance = 0.00001f;
     }
 }
