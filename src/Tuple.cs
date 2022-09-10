@@ -128,7 +128,6 @@ namespace SharpTrace
             return this == (Tuple)obj;
         }
         
-        // override object.GetHashCode
         public override int GetHashCode()
         {
             var xIntSpan = MemoryMarshal.Cast<float, int>(new float[] { x, y, z, w });
