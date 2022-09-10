@@ -100,6 +100,20 @@ namespace SharpTrace
             return this / Magnitude();
         }
 
+        public static float Dot(Tuple lhs, Tuple rhs) 
+        {
+            return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
+        }
+
+        public static Tuple Cross(Tuple lhs, Tuple rhs) 
+        {
+            return NewVector(
+                lhs.y * rhs.z - lhs.z * rhs.y,
+                lhs.z * rhs.x - lhs.x * rhs.z,
+                lhs.x * rhs.y - lhs.y * rhs.x
+            );
+        }
+
         public bool Equals(Tuple other) {
             return this == other;
         }
