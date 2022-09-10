@@ -53,7 +53,7 @@ public class ColorTests
         var c1 = new Color(1.0f, 0.2f, 0.4f);
         var c2 = new Color(0.9f, 1.0f, 0.1f);
 
-        var result = c1 * c2;
+        var result = Color.HardamardProduct(c1, c2);
 
         Assert.True(result == new Color(0.9f, 0.2f, 0.04f), "Addition of a colors yields correct color.");
     }

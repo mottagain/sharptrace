@@ -50,7 +50,7 @@ namespace SharpTrace
             };
         }
 
-        public static Color operator *(Color lhs, Color rhs) 
+        public static Color HardamardProduct(Color lhs, Color rhs) 
         {
             return new Color
             {
