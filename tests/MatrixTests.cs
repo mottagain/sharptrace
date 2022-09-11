@@ -115,4 +115,37 @@ public class MatrixTests
         Assert.True(m * t == new Tuple { x = 18f, y = 24f, z = 33f, w = 1f }, "Multiplying a matrix by a Tuple results in the expected value.");
     }
 
+    [Fact]
+    public void MultiplyMatrixByIdentity()
+    {
+        var testData = new float[,] { { 1f , 2f, 3f, 4f }, { 2f, 4f, 4f, 2f }, { 8f, 6f, 4f, 1f }, { 0f, 0f, 0f, 1f } };
+
+        var m1 = new Matrix(testData);
+        var m2 = Matrix.Identity(4);
+
+        Assert.True(m1 * m2 == m1, "Multiplying a matrix by the identity matrix yields itself.");
+    }
+
+    [Fact]
+    public void MultiplyTranspose()
+    {
+        var testData = new float[,] { { 0f , 9f, 3f, 0f }, { 9f, 8f, 0f, 8f }, { 1f, 8f, 5f, 3f }, { 0f, 0f, 5f, 8f } };
+        var resultData = new float[,] { { 0f , 9f, 1f, 0f }, { 9f, 8f, 8f, 0f }, { 3f, 0f, 5f, 5f }, { 0f, 8f, 3f, 8f } };
+
+        var m = new Matrix(testData);
+        var result = new Matrix(resultData);
+
+        Assert.True(m.Transpose() == result, "Transposing a matrix yeilds the correct value.");
+    }
+
+    [Fact]
+    public void DeterminantOf2x2Matrix()
+    {
+        var testData = new float[,] { { 1f , 5f }, { -3f, 2f } };
+        var m = new Matrix(testData);
+
+        var result = Matrix.Determinant(m);
+
+        Assert.True(result == 17f, "Determinant of 2x2 matrix is correct.");
+    }
 }

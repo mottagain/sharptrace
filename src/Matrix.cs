@@ -6,19 +6,20 @@ namespace SharpTrace
 
     public struct Matrix : IEquatable<Matrix>
     {
-        public Matrix(int rows, int columns) 
+        public Matrix(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
             _values = new float[rows * columns];
         }
 
-        public Matrix(float[,] values) {
+        public Matrix(float[,] values)
+        {
             this.Rows = values.GetLength(0);
             this.Columns = values.GetLength(1);
             _values = new float[Rows * Columns];
 
-            for (int row = 0; row < Rows; row++) 
+            for (int row = 0; row < Rows; row++)
             {
                 for (int column = 0; column < Columns; column++)
                 {
@@ -27,25 +28,37 @@ namespace SharpTrace
             }
         }
 
+        public static Matrix Identity(int size)
+        {
+            var result = new Matrix(size, size);
+
+            for (int i = 0; i < size; i++)
+            {
+                result[i, i] = 1;
+            }
+
+            return result;
+        }
+
         public int Rows { get; private set; }
 
         public int Columns { get; private set; }
 
-        public float this[int row, int column] 
+        public float this[int row, int column]
         {
-            get 
+            get
             {
                 return _values[row * Columns + column];
             }
-            set 
+            set
             {
                 _values[row * Columns + column] = value;
             }
         }
 
-        public static bool operator == (Matrix lhs, Matrix rhs) 
+        public static bool operator ==(Matrix lhs, Matrix rhs)
         {
-            if (lhs.Rows != rhs.Rows || lhs.Columns != rhs.Columns) 
+            if (lhs.Rows != rhs.Rows || lhs.Columns != rhs.Columns)
             {
                 return false;
             }
@@ -61,12 +74,12 @@ namespace SharpTrace
             return true;
         }
 
-        public static bool operator != (Matrix lhs, Matrix rhs) 
+        public static bool operator !=(Matrix lhs, Matrix rhs)
         {
             return !(lhs == rhs);
         }
 
-        public static Matrix operator * (Matrix lhs, Matrix rhs) 
+        public static Matrix operator *(Matrix lhs, Matrix rhs)
         {
             if (lhs.Columns != rhs.Rows)
             {
@@ -75,11 +88,12 @@ namespace SharpTrace
 
             Matrix result = new Matrix(lhs.Rows, lhs.Columns);
 
-            for (int row = 0; row < lhs.Rows; row++) {
+            for (int row = 0; row < lhs.Rows; row++)
+            {
                 for (int column = 0; column < lhs.Columns; column++)
                 {
                     float accum = 0f;
-                    for (int other = 0; other < lhs.Rows; other++) 
+                    for (int other = 0; other < lhs.Rows; other++)
                     {
                         accum += lhs[row, other] * rhs[other, column];
                     }
@@ -90,14 +104,15 @@ namespace SharpTrace
             return result;
         }
 
-        public static Tuple operator * (Matrix lhs, Tuple rhs) 
+        public static Tuple operator *(Matrix lhs, Tuple rhs)
         {
             if (lhs.Rows != 4 || lhs.Columns != 4)
             {
                 throw new InvalidOperationException("Expected a 4x4 matrix for multiplication by a tuple.");
             }
 
-            return new Tuple {
+            return new Tuple
+            {
                 x = lhs[0, 0] * rhs.x + lhs[0, 1] * rhs.y + lhs[0, 2] * rhs.z + lhs[0, 3] * rhs.w,
                 y = lhs[1, 0] * rhs.x + lhs[1, 1] * rhs.y + lhs[1, 2] * rhs.z + lhs[1, 3] * rhs.w,
                 z = lhs[2, 0] * rhs.x + lhs[2, 1] * rhs.y + lhs[2, 2] * rhs.z + lhs[2, 3] * rhs.w,
@@ -105,7 +120,33 @@ namespace SharpTrace
             };
         }
 
-        public bool Equals(Matrix other) {
+        public Matrix Transpose()
+        {
+            var result = new Matrix(Columns, Rows);
+
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int column = 0; column < Columns; column++)
+                {
+                    result[column, row] = this[row, column];
+                }
+            }
+
+            return result;
+        }
+
+        public static float Determinant(Matrix m)
+        {
+            if (m.Rows != 2 || m.Columns != 2)
+            {
+                throw new InvalidOperationException("Determinant only works on 2x2 matricies.");
+            }
+
+            return m[0, 0] * m[1, 1] - m[0, 1] * m[1, 0];
+        }
+
+        public bool Equals(Matrix other)
+        {
             return this == other;
         }
 
@@ -115,15 +156,15 @@ namespace SharpTrace
             {
                 return false;
             }
-            
+
             return this == (Matrix)obj;
         }
-        
+
         public override int GetHashCode()
         {
             int result = 0;
             var intArr = MemoryMarshal.Cast<float, int>(_values);
-            foreach (var part in intArr) 
+            foreach (var part in intArr)
             {
                 result ^= intArr[0];
             }
