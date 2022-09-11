@@ -282,4 +282,15 @@ public class MatrixTests
 
         Assert.True(m1 * m2 * m2Inverse == m1, "A matrix multiplication can be reversed through multiplication by inverse.");
     }
+
+    [Fact]
+    public void TranslationMatrix() 
+    {
+        var transform = Matrix.Translation(5, -3, 2);
+        var p = Tuple.NewPoint(-3, 4, 5);
+
+        var expectedResult = Tuple.NewPoint(2, 1, 7);
+
+        Assert.True(transform * p == expectedResult, "Translating a point through a translation matrix works as expected.");
+    }
 }

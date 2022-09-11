@@ -40,6 +40,15 @@ namespace SharpTrace
             return result;
         }
 
+        public static Matrix Translation(float x, float y, float z)
+        {
+            Matrix result = Identity(4);
+            result[0, 3] = x;
+            result[1, 3] = y;
+            result[2, 3] = z;
+            return result;
+        }
+
         public int Rows { get; private set; }
 
         public int Columns { get; private set; }
@@ -150,10 +159,10 @@ namespace SharpTrace
             {
                 return this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0];
             }
-            else 
+            else
             {
                 float accum = 0;
-                for (int column = 0; column < Columns; column++) 
+                for (int column = 0; column < Columns; column++)
                 {
                     accum += this[0, column] * Cofactor(0, column);
                 }
@@ -169,8 +178,8 @@ namespace SharpTrace
             {
                 for (int column = 0; column < result.Columns; column++)
                 {
-                    int sourceRow = (row < rowToRemove)?(row):(row + 1);
-                    int sourceColumn = (column < columnToRemove)?(column):(column + 1);
+                    int sourceRow = (row < rowToRemove) ? (row) : (row + 1);
+                    int sourceColumn = (column < columnToRemove) ? (column) : (column + 1);
 
                     result[row, column] = this[sourceRow, sourceColumn];
                 }
@@ -186,11 +195,11 @@ namespace SharpTrace
             return subMatrix.Determinant();
         }
 
-        public float Cofactor(int rowToRemove, int columnToRemove) 
+        public float Cofactor(int rowToRemove, int columnToRemove)
         {
             float result = Minor(rowToRemove, columnToRemove);
 
-            if ((rowToRemove + columnToRemove) % 2 != 0) 
+            if ((rowToRemove + columnToRemove) % 2 != 0)
             {
                 return -result;
             }
@@ -198,17 +207,17 @@ namespace SharpTrace
             return result;
         }
 
-        public bool IsInvertable() 
+        public bool IsInvertable()
         {
             float determinant = this.Determinant();
 
             return !MathExt.Near(determinant, 0f);
         }
 
-        public Matrix Inverse() 
+        public Matrix Inverse()
         {
             float determinant = Determinant();
-            if (MathExt.Near(determinant, 0f)) 
+            if (MathExt.Near(determinant, 0f))
             {
                 throw new InvalidOperationException("Matrix is not invertable.");
             }
