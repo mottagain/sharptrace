@@ -135,14 +135,95 @@ namespace SharpTrace
             return result;
         }
 
-        public static float Determinant(Matrix m)
+        public float Determinant()
         {
-            if (m.Rows != 2 || m.Columns != 2)
+            if (Rows != Columns)
             {
-                throw new InvalidOperationException("Determinant only works on 2x2 matricies.");
+                throw new InvalidOperationException("Determinant only works on n x n matricies.");
             }
 
-            return m[0, 0] * m[1, 1] - m[0, 1] * m[1, 0];
+            if (Rows == 1)
+            {
+                return this[0, 0];
+            }
+            else if (Rows == 2)
+            {
+                return this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0];
+            }
+            else 
+            {
+                float accum = 0;
+                for (int column = 0; column < Columns; column++) 
+                {
+                    accum += this[0, column] * Cofactor(0, column);
+                }
+                return accum;
+            }
+        }
+
+        public Matrix SubMatrix(int rowToRemove, int columnToRemove)
+        {
+            var result = new Matrix(Rows - 1, Columns - 1);
+
+            for (int row = 0; row < result.Rows; row++)
+            {
+                for (int column = 0; column < result.Columns; column++)
+                {
+                    int sourceRow = (row < rowToRemove)?(row):(row + 1);
+                    int sourceColumn = (column < columnToRemove)?(column):(column + 1);
+
+                    result[row, column] = this[sourceRow, sourceColumn];
+                }
+            }
+
+            return result;
+        }
+
+        public float Minor(int rowToRemove, int columnToRemove)
+        {
+            var subMatrix = SubMatrix(rowToRemove, columnToRemove);
+
+            return subMatrix.Determinant();
+        }
+
+        public float Cofactor(int rowToRemove, int columnToRemove) 
+        {
+            float result = Minor(rowToRemove, columnToRemove);
+
+            if ((rowToRemove + columnToRemove) % 2 != 0) 
+            {
+                return -result;
+            }
+
+            return result;
+        }
+
+        public bool IsInvertable() 
+        {
+            float determinant = this.Determinant();
+
+            return !MathExt.Near(determinant, 0f);
+        }
+
+        public Matrix Inverse() 
+        {
+            float determinant = Determinant();
+            if (MathExt.Near(determinant, 0f)) 
+            {
+                throw new InvalidOperationException("Matrix is not invertable.");
+            }
+
+            var result = new Matrix(Rows, Columns);
+
+            for (int row = 0; row < result.Rows; row++)
+            {
+                for (int column = 0; column < result.Columns; column++)
+                {
+                    result[column, row] = Cofactor(row, column) / determinant;
+                }
+            }
+
+            return result;
         }
 
         public bool Equals(Matrix other)
