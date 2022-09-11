@@ -22,18 +22,18 @@ namespace SharpTrace
 
         public static bool operator == (Tuple lhs, Tuple rhs) {
             return 
-                ApproximatelyEqual(lhs.x, rhs.x) &&
-                ApproximatelyEqual(lhs.y, rhs.y) &&
-                ApproximatelyEqual(lhs.z, rhs.z) &&
-                ApproximatelyEqual(lhs.w, rhs.w);
+                MathExt.Near(lhs.x, rhs.x) &&
+                MathExt.Near(lhs.y, rhs.y) &&
+                MathExt.Near(lhs.z, rhs.z) &&
+                MathExt.Near(lhs.w, rhs.w);
         }
 
         public static bool operator != (Tuple lhs, Tuple rhs) {
             return 
-                !ApproximatelyEqual(lhs.x, rhs.x) ||
-                !ApproximatelyEqual(lhs.y, rhs.y) ||
-                !ApproximatelyEqual(lhs.z, rhs.z) ||
-                !ApproximatelyEqual(lhs.w, rhs.w);
+                !MathExt.Near(lhs.x, rhs.x) ||
+                !MathExt.Near(lhs.y, rhs.y) ||
+                !MathExt.Near(lhs.z, rhs.z) ||
+                !MathExt.Near(lhs.w, rhs.w);
         }
 
         public static Tuple operator +(Tuple lhs, Tuple rhs)
@@ -141,21 +141,12 @@ namespace SharpTrace
 
         public bool IsPoint()
         {
-            return ApproximatelyEqual(w, 1.0f);
+            return MathExt.Near(w, 1.0f);
         }
 
         public bool IsVector()
         {
-            return ApproximatelyEqual(w, 0.0f);
+            return MathExt.Near(w, 0.0f);
         }
-
-        public static bool ApproximatelyEqual(float x, float y)
-        {
-            var diff = Math.Abs(x - y);
-            return diff <= _tolerance ||
-                diff <= Math.Max(Math.Abs(x), Math.Abs(y)) * _tolerance;
-        }
-
-        private const float _tolerance = 0.00001f;
     }
 }

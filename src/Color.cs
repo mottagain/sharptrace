@@ -18,16 +18,16 @@ namespace SharpTrace
 
         public static bool operator == (Color lhs, Color rhs) {
             return 
-                ApproximatelyEqual(lhs.r, rhs.r) &&
-                ApproximatelyEqual(lhs.g, rhs.g) &&
-                ApproximatelyEqual(lhs.b, rhs.b);
+                MathExt.Near(lhs.r, rhs.r) &&
+                MathExt.Near(lhs.g, rhs.g) &&
+                MathExt.Near(lhs.b, rhs.b);
         }
 
         public static bool operator != (Color lhs, Color rhs) {
             return 
-                !ApproximatelyEqual(lhs.r, rhs.r) ||
-                !ApproximatelyEqual(lhs.g, rhs.g) ||
-                !ApproximatelyEqual(lhs.b, rhs.b);
+                !MathExt.Near(lhs.r, rhs.r) ||
+                !MathExt.Near(lhs.g, rhs.g) ||
+                !MathExt.Near(lhs.b, rhs.b);
         }
 
         public static Color operator +(Color lhs, Color rhs)
@@ -94,14 +94,5 @@ namespace SharpTrace
             }
             return result;
         }
-
-        public static bool ApproximatelyEqual(float x, float y)
-        {
-            var diff = Math.Abs(x - y);
-            return diff <= _tolerance ||
-                diff <= Math.Max(Math.Abs(x), Math.Abs(y)) * _tolerance;
-        }
-
-        private const float _tolerance = 0.00001f;
     }
 }

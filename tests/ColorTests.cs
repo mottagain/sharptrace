@@ -9,9 +9,9 @@ public class ColorTests
         var color = new Color(-0.5f, 0.4f, 1.7f);
 
         Assert.True(
-            Color.ApproximatelyEqual(color.r, -0.5f) && 
-            Color.ApproximatelyEqual(color.g, 0.4f) && 
-            Color.ApproximatelyEqual(color.b, 1.7f), 
+            MathExt.Near(color.r, -0.5f) && 
+            MathExt.Near(color.g, 0.4f) && 
+            MathExt.Near(color.b, 1.7f), 
             "Color constructor forwards correct values.");
     }
 

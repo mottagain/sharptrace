@@ -153,7 +153,7 @@ public class TupleTests
     {
         var v = Tuple.NewVector(0, 0, 1);
 
-        Assert.True(Tuple.ApproximatelyEqual(v.Magnitude(), 1), "Manitude of a simple unit vector in the z direction is 1.");
+        Assert.True(MathExt.Near(v.Magnitude(), 1), "Manitude of a simple unit vector in the z direction is 1.");
     }
 
     [Fact]
@@ -161,7 +161,7 @@ public class TupleTests
     {
         var v = Tuple.NewVector(1, 2, 3);
 
-        Assert.True(Tuple.ApproximatelyEqual(v.Magnitude(), (float)Math.Sqrt(14)), "Manitude of a 1, 2, 3 vector yeilds the correct value.");
+        Assert.True(MathExt.Near(v.Magnitude(), (float)Math.Sqrt(14)), "Manitude of a 1, 2, 3 vector yeilds the correct value.");
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class TupleTests
     {
         var v = Tuple.NewVector(-1, -2, -3);
 
-        Assert.True(Tuple.ApproximatelyEqual(v.Magnitude(), (float)Math.Sqrt(14)), "Manitude of a -1, -2, -3 vector yeilds the correct value.");
+        Assert.True(MathExt.Near(v.Magnitude(), (float)Math.Sqrt(14)), "Manitude of a -1, -2, -3 vector yeilds the correct value.");
     }
 
     [Fact]
@@ -189,7 +189,7 @@ public class TupleTests
 
         var result = v.Normalize();
 
-        Assert.True(Tuple.ApproximatelyEqual(result.Magnitude(), 1.0f), "Magnitude of the result of normalization is 1.");
+        Assert.True(MathExt.Near(result.Magnitude(), 1.0f), "Magnitude of the result of normalization is 1.");
         Assert.True(result == Tuple.NewVector(0.26726f, 0.53452f, 0.80178f), "Normalization of a vector yields the correct vector.");
     }
 
@@ -201,7 +201,7 @@ public class TupleTests
 
         var result = v.Normalize();
 
-        Assert.True(Tuple.ApproximatelyEqual(result.Magnitude(), 1.0f), "Magnitude of the result of normalization is 1.");
+        Assert.True(MathExt.Near(result.Magnitude(), 1.0f), "Magnitude of the result of normalization is 1.");
     }
 
     [Fact]
@@ -210,7 +210,7 @@ public class TupleTests
         var a = Tuple.NewVector(1, 2, 3);
         var b = Tuple.NewVector(2, 3, 4);
 
-        Assert.True(Tuple.ApproximatelyEqual(Tuple.Dot(a, b), 20), "Dot product of two vectors yields the correct scalar.");
+        Assert.True(MathExt.Near(Tuple.Dot(a, b), 20), "Dot product of two vectors yields the correct scalar.");
     }
 
     [Fact]
