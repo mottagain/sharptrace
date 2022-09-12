@@ -49,6 +49,57 @@ namespace SharpTrace
             return result;
         }
 
+        public static Matrix Scaling(float x, float y, float z)
+        {
+            Matrix result = Identity(4);
+            result[0, 0] = x;
+            result[1, 1] = y;
+            result[2, 2] = z;
+            return result;
+        }
+
+        public static Matrix RotationX(double radians) 
+        {
+            Matrix result = Identity(4);
+            result[1, 1] = (float)Math.Cos(radians);
+            result[1, 2] = -(float)Math.Sin(radians);
+            result[2, 1] = (float)Math.Sin(radians);
+            result[2, 2] = -(float)Math.Cos(radians);
+            return result;
+        }
+
+        public static Matrix RotationY(double radians) 
+        {
+            Matrix result = Identity(4);
+            result[0, 0] = (float)Math.Cos(radians);
+            result[0, 2] = (float)Math.Sin(radians);
+            result[2, 0] = -(float)Math.Sin(radians);
+            result[2, 2] = (float)Math.Cos(radians);
+            return result;
+        }
+
+        public static Matrix RotationZ(double radians) 
+        {
+            Matrix result = Identity(4);
+            result[0, 0] = (float)Math.Cos(radians);
+            result[0, 1] = -(float)Math.Sin(radians);
+            result[1, 0] = (float)Math.Sin(radians);
+            result[1, 1] = (float)Math.Cos(radians);
+            return result;
+        }
+
+        public static Matrix Shearing(float xy, float xz, float yx, float yz, float zx, float zy) 
+        {
+            Matrix result = Identity(4);
+            result[0, 1] = xy;
+            result[0, 2] = xz;
+            result[1, 0] = yx;
+            result[1, 2] = yz;
+            result[2, 0] = zx; 
+            result[2, 1] = zy;
+            return result;
+        }
+
         public int Rows { get; private set; }
 
         public int Columns { get; private set; }

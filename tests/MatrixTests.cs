@@ -284,7 +284,7 @@ public class MatrixTests
     }
 
     [Fact]
-    public void TranslationMatrix() 
+    public void TranslationMatrixOnPoint() 
     {
         var transform = Matrix.Translation(5, -3, 2);
         var p = Tuple.NewPoint(-3, 4, 5);
@@ -293,4 +293,156 @@ public class MatrixTests
 
         Assert.True(transform * p == expectedResult, "Translating a point through a translation matrix works as expected.");
     }
+
+    [Fact]
+    public void TranslationMatrixOnVector() 
+    {
+        var transform = Matrix.Translation(5, -3, 2);
+        var v = Tuple.NewVector(-3, 4, 5);
+
+        Assert.True(transform * v == v, "Translating a vector through a translation matrix has no effect.");
+    }
+
+    [Fact]
+    public void ScalingTransformMatrixOnPoint() 
+    {
+        var transform = Matrix.Scaling(2, 3, 4);
+        var p = Tuple.NewPoint(-4, 6, 8);
+
+        var expectedResult = Tuple.NewPoint(-8, 18, 32);
+
+        Assert.True(transform * p == expectedResult, "Scaling a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ScalingTransformMatrixOnVector() 
+    {
+        var transform = Matrix.Scaling(2, 3, 4);
+        var v = Tuple.NewVector(-4, 6, 8);
+
+        var expectedResult = Tuple.NewVector(-8, 18, 32);
+
+        Assert.True(transform * v == expectedResult, "Scaling a vector through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void InverseOfScalingTransformMatrixOnVector() 
+    {
+        var transform = Matrix.Scaling(2, 3, 4);
+        transform = transform.Inverse();
+        var v = Tuple.NewVector(-4, 6, 8);
+
+        var expectedResult = Tuple.NewVector(-2, 2, 2);
+
+        Assert.True(transform * v == expectedResult, "Inverse Scaling a vector through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ReflectionTransformMatrixOnPoint() 
+    {
+        var transform = Matrix.Scaling(-1, 1, 1);
+        var p = Tuple.NewPoint(2, 3, 4);
+
+        var expectedResult = Tuple.NewPoint(-2, 3, 4);
+
+        Assert.True(transform * p == expectedResult, "Reflection of a vector through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void RotationAboutXTransformMatrixOnPoint() 
+    {
+        var p = Tuple.NewPoint(0, 1, 0);
+        var halfQuarter = Matrix.RotationX(Math.PI / 4);
+        var fullQuarter = Matrix.RotationX(Math.PI / 2);
+
+        Assert.True(halfQuarter * p == Tuple.NewPoint(0f, (float)Math.Sqrt(2.0) / 2f, (float)Math.Sqrt(2.0) / 2f), "Rotation about X of a point through a translation matrix works as expected.");
+        Assert.True(fullQuarter * p == Tuple.NewPoint(0f, 0f, 1f), "Rotation about X of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void TransposeRotationAboutXTransformMatrixOnPoint() 
+    {
+        var p = Tuple.NewPoint(0, 1, 0);
+        var halfQuarter = Matrix.RotationX(Math.PI / 4);
+        var transpose = halfQuarter.Transpose();
+
+        Assert.True(transpose * p == Tuple.NewPoint(0f, (float)Math.Sqrt(2.0) / 2f, -(float)Math.Sqrt(2.0) / 2f), "Transpose rotation about X of a point through a translation matrix works as expected.");
+    }
+
+    [Fact]
+    public void RotationAboutYTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(0, 0, 1);
+        var halfQuarter = Matrix.RotationY(Math.PI / 4);
+        var fullQuarter = Matrix.RotationY(Math.PI / 2);
+
+        Assert.True(halfQuarter * p == Tuple.NewPoint((float)Math.Sqrt(2.0) / 2f, 0, (float)Math.Sqrt(2.0) / 2f), "Rotation about Y of a point through a translation matrix works as expected.");
+        Assert.True(fullQuarter * p == Tuple.NewPoint(1f, 0f, 0f), "Rotation about Y of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void RotationAboutZTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(0, 1, 0);
+        var halfQuarter = Matrix.RotationZ(Math.PI / 4);
+        var fullQuarter = Matrix.RotationZ(Math.PI / 2);
+
+        Assert.True(halfQuarter * p == Tuple.NewPoint(-(float)Math.Sqrt(2.0) / 2f, (float)Math.Sqrt(2.0) / 2f, 0f), "Rotation about Z of a point through a translation matrix works as expected.");
+        Assert.True(fullQuarter * p == Tuple.NewPoint(-1f, 0f, 0f), "Rotation about Z of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ShearingXInProportionToYTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(2, 3, 4);
+        var transform = Matrix.Shearing(1f, 0f, 0f, 0f, 0f, 0f);
+
+        Assert.True(transform * p == Tuple.NewPoint(5f, 3f, 4f), "Shearing X in proportion to Y of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ShearingXInProportionToZTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(2, 3, 4);
+        var transform = Matrix.Shearing(0f, 1f, 0f, 0f, 0f, 0f);
+
+        Assert.True(transform * p == Tuple.NewPoint(6f, 3f, 4f), "Shearing X in proportion to Z of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ShearingYInProportionToXTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(2, 3, 4);
+        var transform = Matrix.Shearing(0f, 0f, 1f, 0f, 0f, 0f);
+
+        Assert.True(transform * p == Tuple.NewPoint(2f, 5f, 4f), "Shearing Y in proportion to X of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ShearingYInProportionToZTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(2, 3, 4);
+        var transform = Matrix.Shearing(0f, 0f, 0f, 1f, 0f, 0f);
+
+        Assert.True(transform * p == Tuple.NewPoint(2f, 7f, 4f), "Shearing Y in proportion to Z of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ShearingZInProportionToXTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(2, 3, 4);
+        var transform = Matrix.Shearing(0f, 0f, 0f, 0f, 1f, 0f);
+
+        Assert.True(transform * p == Tuple.NewPoint(2f, 3f, 6f), "Shearing Z in proportion to X of a point through a translation matrix works as expected.");
+    }    
+
+    [Fact]
+    public void ShearingZInProportionToYTransformMatrixOnPoint()
+    {
+        var p = Tuple.NewPoint(2, 3, 4);
+        var transform = Matrix.Shearing(0f, 0f, 0f, 0f, 0f, 1f);
+
+        Assert.True(transform * p == Tuple.NewPoint(2f, 3f, 7f), "Shearing Z in proportion to X of a point through a translation matrix works as expected.");
+    }    
+
 }
