@@ -2,16 +2,39 @@
 namespace SharpTrace 
 {
 
+    public static class Program 
+    {
+        public static void Main() 
+        {
+            var canvas = new Canvas(1000, 1000);
+            var canvasCenter = Tuple.NewPoint(500, 500, 0);
+
+            var clockPosition = Tuple.NewPoint(0, 400, 0);
+            var rotation = Matrix.RotationZ(Math.PI / 6);
+
+            var white = new Color(1, 1, 1);
+
+            for (int i = 0; i < 12; i++) {
+                canvas[(int)clockPosition.x + (int)canvasCenter.x, (int)clockPosition.y + (int)canvasCenter.y] = white;
+
+                clockPosition = rotation * clockPosition;
+            }
+
+            canvas.SaveAsJpeg("output.jpg");
+        }
+    }
+
+
 //     public class Projectile
 //     {
 //         public Tuple Position { get; set; }
 //         public Tuple Velocity { get; set; }        
 //     }
 
-    public static class Program 
-    {
-        public static void Main() 
-        {
+//     public static class Program 
+//     {
+//         public static void Main() 
+//         {
 //             var canvas = new Canvas(1000, 1000);
 
 //             var projectile = new Projectile();
@@ -25,9 +48,7 @@ namespace SharpTrace
 //             }
 
 //             canvas.SaveAsJpeg("output.jpg");
-
-            Console.WriteLine("Done");
-        }
+//         }
 
 //         private static void Tick(Projectile projectile) 
 //         {
@@ -40,6 +61,6 @@ namespace SharpTrace
 
 //         private static readonly Tuple _gravity = Tuple.NewVector(0, -0.02f, 0);
 //         private static readonly Tuple _wind = Tuple.NewVector(-0.001f, 0, 0);
-    }
+//     }
     
 }
