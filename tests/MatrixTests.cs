@@ -360,13 +360,13 @@ public class MatrixTests
     }    
 
     [Fact]
-    public void TransposeRotationAboutXTransformMatrixOnPoint() 
+    public void InverseRotationAboutXTransformMatrixOnPoint() 
     {
         var p = Tuple.NewPoint(0, 1, 0);
         var halfQuarter = Matrix.RotationX(Math.PI / 4);
-        var transpose = halfQuarter.Transpose();
+        var inverse = halfQuarter.Inverse();
 
-        Assert.True(transpose * p == Tuple.NewPoint(0f, (float)Math.Sqrt(2.0) / 2f, -(float)Math.Sqrt(2.0) / 2f), "Transpose rotation about X of a point through a translation matrix works as expected.");
+        Assert.True(inverse * p == Tuple.NewPoint(0f, (float)Math.Sqrt(2.0) / 2f, -(float)Math.Sqrt(2.0) / 2f), "Inverse rotation about X of a point through a translation matrix works as expected.");
     }
 
     [Fact]

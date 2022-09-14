@@ -64,7 +64,7 @@ namespace SharpTrace
             result[1, 1] = (float)Math.Cos(radians);
             result[1, 2] = -(float)Math.Sin(radians);
             result[2, 1] = (float)Math.Sin(radians);
-            result[2, 2] = -(float)Math.Cos(radians);
+            result[2, 2] = (float)Math.Cos(radians);
             return result;
         }
 
