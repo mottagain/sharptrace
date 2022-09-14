@@ -31,6 +31,11 @@ namespace SharpTrace
             return _origin + _direction * t;
         }
 
+        public Ray Transform(Matrix m) 
+        {
+            return new Ray(m * _origin, m * _direction);
+        }
+
         private Tuple _origin;
         private Tuple _direction;
     }
