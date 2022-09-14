@@ -86,19 +86,30 @@ public class SphereTests
         Assert.True(s.Transform == t, "Setting a transform yeilds expected value.");
     }
 
-    // [Fact]
-    // public void RayIntersectsScaledSphereAtTwoPoints()
-    // {
-    //     var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
-    //     var s = new Sphere();
+    [Fact]
+    public void RayIntersectsScaledSphere()
+    {
+        var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
+        var s = new Sphere();
 
-    //     s.Transform = Matrix.Scaling(2, 2, 2);
-    //     var xs = s.Intersects(r);
+        s.Transform = Matrix.Scaling(2, 2, 2);
+        var xs = s.Intersects(r);
 
-    //     Assert.True(xs.Count == 2, "Two intersections are expected.");
-    //     Assert.True(xs[0].Time == 3.0f, "First intersection is at t = 6.0.");
-    //     Assert.True(xs[1].Time == 7.0f, "Second intersection is at t = 6.0.");
-    // }
+        Assert.True(xs.Count == 2, "Two intersections are expected.");
+        Assert.True(xs[0].Time == 3.0f, "First intersection is at t = 6.0.");
+        Assert.True(xs[1].Time == 7.0f, "Second intersection is at t = 6.0.");
+    }
 
+    [Fact]
+    public void RayDoesNotIntersectScaledSphere()
+    {
+        var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
+        var s = new Sphere();
+
+        s.Transform = Matrix.Translation(5, 0, 0);
+        var xs = s.Intersects(r);
+
+        Assert.True(xs.Count == 0, "No intersections are expected.");
+    }
  
 }

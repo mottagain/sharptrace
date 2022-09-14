@@ -31,10 +31,10 @@ namespace SharpTrace
         {
             Ray transformedRay = r.Transform(this.Transform.Inverse());
 
-            var sphereToRayVector = r.Origin - Tuple.NewPoint(0, 0, 0);
+            var sphereToRayVector = transformedRay.Origin - Tuple.NewPoint(0, 0, 0);
 
-            var a = Tuple.Dot(r.Direction, r.Direction);
-            var b = 2 * Tuple.Dot(r.Direction, sphereToRayVector);
+            var a = Tuple.Dot(transformedRay.Direction, transformedRay.Direction);
+            var b = 2 * Tuple.Dot(transformedRay.Direction, sphereToRayVector);
             var c = Tuple.Dot(sphereToRayVector, sphereToRayVector) - 1f;
 
             var discriminant = b * b - 4 * a * c;
