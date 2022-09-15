@@ -6,28 +6,21 @@ namespace SharpTrace
     {
         public Sphere()
         {
-            _origin = Tuple.NewPoint(0, 0, 0);
-            _radius = 1;
+            Origin = Tuple.NewPoint(0, 0, 0);
+            Radius = 1;
             Transform = Matrix.Identity(4);
+            Material = new Material();
         }
 
-        public Tuple Origin
-        {
-            get
-            {
-                return _origin;
-            }
-        }
+        public Tuple Origin { get; private set; }
 
-        public float Radius
-        {
-            get
-            {
-                return _radius;
-            }
-        }
+        public float Radius { get; private set; }
 
-        public Intersections Intersects(Ray r) 
+        public Matrix Transform { get; set; }
+
+        public Material Material { get; set; }
+
+        public Intersections Intersects(Ray r)
         {
             Ray transformedRay = r.Transform(this.Transform.Inverse());
 
@@ -39,7 +32,7 @@ namespace SharpTrace
 
             var discriminant = b * b - 4 * a * c;
 
-            if (discriminant < 0) 
+            if (discriminant < 0)
             {
                 return new Intersections();
             }
@@ -50,7 +43,8 @@ namespace SharpTrace
             return new Intersections { new Intersection(t1, this), new Intersection(t2, this) };
         }
 
-        public Tuple NormalAt(Tuple worldPoint) {
+        public Tuple NormalAt(Tuple worldPoint)
+        {
             var objectPoint = Transform.Inverse() * worldPoint;
             var objectNormal = objectPoint - Tuple.NewPoint(0, 0, 0);
             var worldNormal = Transform.Inverse().Transpose() * objectNormal;
@@ -58,10 +52,5 @@ namespace SharpTrace
 
             return worldNormal.Normalize();
         }
-
-        public Matrix Transform { get; set; }
-
-        private Tuple _origin;
-        private float _radius;
     }
 }

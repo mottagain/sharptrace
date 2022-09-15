@@ -223,4 +223,27 @@ public class TupleTests
         Assert.True(Tuple.Cross(b, a) == Tuple.NewVector(1, -2, 1), "Cross product of two vectors yields the correct vector.");
     }
 
+    [Fact]
+    public void ReflectVectorApproaching45() 
+    {
+        var v = Tuple.NewVector(1, -1, 0);
+        var n = Tuple.NewVector(0, 1, 0);
+
+        var r = v.Reflect(n);
+
+        Assert.True(r == Tuple.NewVector(1, 1, 0), "Reflecting a vector approaching 45 degrees reverses y.");
+    }
+
+    [Fact]
+    public void ReflectVectorOffSlantedSurface() 
+    {
+        float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
+        var v = Tuple.NewVector(0, -1, 0);
+        var n = Tuple.NewVector(sqrtOf2Over2, sqrtOf2Over2, 0);
+
+        var r = v.Reflect(n);
+
+        Assert.True(r == Tuple.NewVector(1, 0, 0), "Reflecting a vector on a slanted surface yields correct result.");
+    }
+
 }

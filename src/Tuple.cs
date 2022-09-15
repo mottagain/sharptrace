@@ -20,16 +20,18 @@ namespace SharpTrace
             return new Tuple() { x = x, y = y, z = z, w = 0.0f };
         }
 
-        public static bool operator == (Tuple lhs, Tuple rhs) {
-            return 
+        public static bool operator ==(Tuple lhs, Tuple rhs)
+        {
+            return
                 MathExt.Near(lhs.x, rhs.x) &&
                 MathExt.Near(lhs.y, rhs.y) &&
                 MathExt.Near(lhs.z, rhs.z) &&
                 MathExt.Near(lhs.w, rhs.w);
         }
 
-        public static bool operator != (Tuple lhs, Tuple rhs) {
-            return 
+        public static bool operator !=(Tuple lhs, Tuple rhs)
+        {
+            return
                 !MathExt.Near(lhs.x, rhs.x) ||
                 !MathExt.Near(lhs.y, rhs.y) ||
                 !MathExt.Near(lhs.z, rhs.z) ||
@@ -47,7 +49,7 @@ namespace SharpTrace
             };
         }
 
-        public static Tuple operator -(Tuple lhs, Tuple rhs) 
+        public static Tuple operator -(Tuple lhs, Tuple rhs)
         {
             return new Tuple
             {
@@ -58,14 +60,15 @@ namespace SharpTrace
             };
         }
 
-        public static Tuple operator -(Tuple target) 
+        public static Tuple operator -(Tuple target)
         {
-            return new Tuple {
+            return new Tuple
+            {
                 x = -target.x,
                 y = -target.y,
                 z = -target.z,
                 w = -target.w,
-            };       
+            };
         }
 
         public static Tuple operator *(Tuple tuple, float scalar)
@@ -90,22 +93,22 @@ namespace SharpTrace
             };
         }
 
-        public float Magnitude() 
+        public float Magnitude()
         {
             return (float)Math.Sqrt(x * x + y * y + z * z + w * w);
         }
 
-        public Tuple Normalize() 
+        public Tuple Normalize()
         {
             return this / Magnitude();
         }
 
-        public static float Dot(Tuple lhs, Tuple rhs) 
+        public static float Dot(Tuple lhs, Tuple rhs)
         {
             return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
         }
 
-        public static Tuple Cross(Tuple lhs, Tuple rhs) 
+        public static Tuple Cross(Tuple lhs, Tuple rhs)
         {
             return NewVector(
                 lhs.y * rhs.z - lhs.z * rhs.y,
@@ -114,7 +117,13 @@ namespace SharpTrace
             );
         }
 
-        public bool Equals(Tuple other) {
+        public Tuple Reflect(Tuple normal)
+        {
+            return this - normal * 2 * Tuple.Dot(this, normal);
+        }
+
+        public bool Equals(Tuple other)
+        {
             return this == other;
         }
 
@@ -124,10 +133,10 @@ namespace SharpTrace
             {
                 return false;
             }
-            
+
             return this == (Tuple)obj;
         }
-        
+
         public override int GetHashCode()
         {
             var xIntSpan = MemoryMarshal.Cast<float, int>(new float[] { x, y, z, w });

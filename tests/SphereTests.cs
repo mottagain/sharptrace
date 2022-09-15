@@ -187,4 +187,25 @@ public class SphereTests
         Assert.True(n == Tuple.NewVector(0f, 0.97014f, -0.24254f), "Normal vector on transformed sphere is correct.");
     }
 
+    [Fact]
+    public void SphereHasDefaultMaterial() 
+    {
+        var s = new Sphere();
+
+        var m = s.Material;
+
+        Assert.True(m.Specular == 0.9f, "Spot check sphere is constructed with a default material.");
+    }
+
+    [Fact]
+    public void SphereMayBeAssignedMaterial() 
+    {
+        var s = new Sphere();
+        var m = new Material();
+
+        s.Material = m;
+
+        Assert.True(s.Material == m, "Sphere may be assigned a material.");
+    }
+
 }
