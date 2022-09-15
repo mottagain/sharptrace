@@ -22,11 +22,11 @@ namespace SharpTrace
 
         public float Shininess { get; set; }
 
-        public Color Lighting(PointLight light, Tuple position, Tuple eyev, Tuple normalv)
+        public Color Lighting(PointLight light, Tuple point, Tuple eyev, Tuple normalv)
         {
             var effectiveColor = Color.HardamardProduct(this.Color, light.Intensity);
 
-            var lightv = (light.Position - position).Normalize();
+            var lightv = (light.Position - point).Normalize();
 
             Color ambient = effectiveColor * this.Ambient;
             Color diffuse;
@@ -41,19 +41,19 @@ namespace SharpTrace
             else
             {
                 diffuse = effectiveColor * this.Diffuse * lightDotNormal;
-            }
 
-            var reflectv = (-lightv).Reflect(normalv);
-            var reflectDotEye = Tuple.Dot(reflectv, eyev);
+                var reflectv = (-lightv).Reflect(normalv);
+                var reflectDotEye = Tuple.Dot(reflectv, eyev);
 
-            if (reflectDotEye <= 0) 
-            {
-                specular = new Color(0, 0, 0);
-            }
-            else
-            {
-                var factor = (float)Math.Pow(reflectDotEye, this.Shininess);
-                specular = light.Intensity * this.Specular * factor;
+                if (reflectDotEye <= 0) 
+                {
+                    specular = new Color(0, 0, 0);
+                }
+                else
+                {
+                    var factor = (float)Math.Pow(reflectDotEye, this.Shininess);
+                    specular = light.Intensity * this.Specular * factor;
+                }
             }
 
             return ambient + diffuse + specular;
