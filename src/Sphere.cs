@@ -50,6 +50,15 @@ namespace SharpTrace
             return new Intersections { new Intersection(t1, this), new Intersection(t2, this) };
         }
 
+        public Tuple NormalAt(Tuple worldPoint) {
+            var objectPoint = Transform.Inverse() * worldPoint;
+            var objectNormal = objectPoint - Tuple.NewPoint(0, 0, 0);
+            var worldNormal = Transform.Inverse().Transpose() * objectNormal;
+            worldNormal.w = 0;
+
+            return worldNormal.Normalize();
+        }
+
         public Matrix Transform { get; set; }
 
         private Tuple _origin;

@@ -111,5 +111,80 @@ public class SphereTests
 
         Assert.True(xs.Count == 0, "No intersections are expected.");
     }
+
+    [Fact]
+    public void NormalOnSphereAtPointOnXAxis() 
+    {
+        var s = new Sphere();
+        
+        var n = s.NormalAt(Tuple.NewPoint(1, 0, 0));
+
+        Assert.True(n == Tuple.NewVector(1, 0, 0), "Normal on point on x axis should be a unit vector on the x axis.");
+    }
  
+    [Fact]
+    public void NormalOnSphereAtPointOnYAxis() 
+    {
+        var s = new Sphere();
+        
+        var n = s.NormalAt(Tuple.NewPoint(0, 1, 0));
+
+        Assert.True(n == Tuple.NewVector(0, 1, 0), "Normal on point on y axis should be a unit vector on the y axis.");
+    }
+
+    [Fact]
+    public void NormalOnSphereAtPointOnZAxis() 
+    {
+        var s = new Sphere();
+        
+        var n = s.NormalAt(Tuple.NewPoint(0, 0, 1));
+
+        Assert.True(n == Tuple.NewVector(0, 0, 1), "Normal on point on z axis should be a unit vector on the z axis.");        
+    }
+
+     [Fact]
+    public void NormalOnSphereAtNonaxialPoint()
+    {
+        var s = new Sphere();
+
+        float sqrtOf3Over3 = (float)Math.Sqrt(3.0) / 3f;
+        var n = s.NormalAt(Tuple.NewPoint(sqrtOf3Over3, sqrtOf3Over3, sqrtOf3Over3));
+
+        Assert.True(n == Tuple.NewVector(sqrtOf3Over3, sqrtOf3Over3, sqrtOf3Over3), "Normal on non-axial point on sphere should be a unit vector to that point.");
+    }
+
+    [Fact]
+    public void NormalOnSphereIsANormalized()
+    {
+        var s = new Sphere();
+
+        float sqrtOf3Over3 = (float)Math.Sqrt(3.0) / 3f;
+        var n = s.NormalAt(Tuple.NewPoint(sqrtOf3Over3, sqrtOf3Over3, sqrtOf3Over3));
+
+        Assert.True(n == n.Normalize(), "Normal vectors on the sphere are normal.");
+    }
+
+    [Fact]
+    public void NormalOnTranslatedSphere()
+    {
+        var s = new Sphere();
+        s.Transform = Matrix.Translation(0, 1, 0);
+
+        var n = s.NormalAt(Tuple.NewPoint(0f, 1.70711f, -0.70711f));
+
+        Assert.True(n == Tuple.NewVector(0f, 0.70711f, -0.70711f), "Normal vector on translated sphere is correct.");
+    }
+
+    [Fact]
+    public void NormalOnTransformedSphere()
+    {
+        var s = new Sphere();
+        s.Transform = Matrix.Scaling(1f, 0.5f, 1f) * Matrix.RotationZ(Math.PI / 5);
+
+        float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
+        var n = s.NormalAt(Tuple.NewPoint(0, sqrtOf2Over2, -sqrtOf2Over2));
+
+        Assert.True(n == Tuple.NewVector(0f, 0.97014f, -0.24254f), "Normal vector on transformed sphere is correct.");
+    }
+
 }
