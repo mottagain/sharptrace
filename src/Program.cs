@@ -13,26 +13,45 @@ namespace SharpTrace
 
         private static void RayCastToSphere()
         {
-            var canvas = new Canvas(1000, 1000);
-            var canvasCenter = Tuple.NewPoint(500, 500, 0);
+            var rayOrigin = Tuple.NewPoint(0, 0, -5);
+            var wallZ = 10f;
 
-            var cameraPos = Tuple.NewPoint(0, 0, -1000);
+            var canvasPixels = 500;
+            var wallSize = 7.0f;
+            var half = wallSize / 2;
+            var pixelSize = wallSize / canvasPixels;
+
+            var canvas = new Canvas(canvasPixels, canvasPixels);
 
             var s = new Sphere();
-            s.Transform = Matrix.Scaling(300, 300, 300);
+            s.Material.Color = new Color(1f, 0.2f, 1f);
 
-            for (int i = -500; i < 500; i++) 
+            var lightPosition = Tuple.NewPoint(-10, 10, -10);
+            var lightColor = new Color(1, 1, 1);
+            var light = new PointLight(lightPosition, lightColor);
+
+            for (int y = 0; y < canvasPixels; y++) 
             {
-                for (int j = -500; j < 500; j++) 
-                {
-                    var directionVector = Tuple.NewPoint(i, j, 500) - cameraPos;
-                    directionVector.Normalize();
-                    var r = new Ray(cameraPos, directionVector);
+                var worldY = half - pixelSize * y;
 
+                for (int x = 0; x < canvasPixels; x++) 
+                {
+                    var worldX = -half + pixelSize * x;
+
+                    var wallPosition = Tuple.NewPoint(worldX, worldY, wallZ);
+
+                    var r = new Ray(rayOrigin, (wallPosition - rayOrigin).Normalize());
                     var xs = s.Intersects(r);
-                    if (xs.Count > 0) 
+
+                    var hit = xs.Hit();
+                    if (hit != null)
                     {
-                        canvas[i + (int)canvasCenter.x, j + (int)canvasCenter.y] = new Color(1, 0, 0);
+                        var point = r.Position(hit.Time);
+                        var normal = hit.Object.NormalAt(point);
+                        var eye = -r.Direction;
+
+                        var color = hit.Object.Material.Lighting(light, point, eye, normal);
+                        canvas[x, y] = color;
                     }
                 }
             }
