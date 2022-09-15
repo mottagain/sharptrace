@@ -57,11 +57,11 @@ namespace SharpTrace
 
 #pragma warning restore CA1416 // This call site is reachable on all platforms.
 
-        private int ToByte(float value) 
+        private byte ToByte(float value) 
         {
             if (value <= 0.0f) return 0;
             if (value >= 1.0f) return 255;
-            return (byte)value * 255;
+            return Convert.ToByte(value * 255f);
         }
 
         private Color[,] _pixels;
