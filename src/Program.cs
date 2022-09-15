@@ -16,6 +16,8 @@ namespace SharpTrace
             var canvas = new Canvas(1000, 1000);
             var canvasCenter = Tuple.NewPoint(500, 500, 0);
 
+            var cameraPos = Tuple.NewPoint(0, 0, -1000);
+
             var s = new Sphere();
             s.Transform = Matrix.Scaling(300, 300, 300);
 
@@ -23,7 +25,9 @@ namespace SharpTrace
             {
                 for (int j = -500; j < 500; j++) 
                 {
-                    var r = new Ray(Tuple.NewPoint(i, j, -500), Tuple.NewVector(0, 0, 1));
+                    var directionVector = Tuple.NewPoint(i, j, 500) - cameraPos;
+                    directionVector.Normalize();
+                    var r = new Ray(cameraPos, directionVector);
 
                     var xs = s.Intersects(r);
                     if (xs.Count > 0) 
