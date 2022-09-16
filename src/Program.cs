@@ -27,7 +27,7 @@ namespace SharpTrace
             s.Material.Color = new Color(1f, 0.2f, 1f);
 
             var lightPosition = Tuple.NewPoint(-10, 10, -10);
-            var lightColor = new Color(1, 1, 1);
+            var lightColor = Color.White;
             var light = new PointLight(lightPosition, lightColor);
 
             for (int y = 0; y < canvasPixels; y++) 
@@ -67,7 +67,7 @@ namespace SharpTrace
             var clockPosition = Tuple.NewPoint(0, 400, 0);
             var rotation = Matrix.RotationZ(Math.PI / 6);
 
-            var white = new Color(1, 1, 1);
+            var white = Color.White;
 
             for (int i = 0; i < 12; i++) {
                 canvas[(int)clockPosition.x + (int)canvasCenter.x, (int)clockPosition.y + (int)canvasCenter.y] = white;
@@ -88,7 +88,7 @@ namespace SharpTrace
             while (projectile.Position.y >= 0.0f)
             {
                 Tick(projectile);
-                canvas[(int)projectile.Position.x, (int)projectile.Position.y] = new Color(200, 0, 0);
+                canvas[(int)projectile.Position.x, (int)projectile.Position.y] = new Color(1, 0, 0);
                 //Console.WriteLine("Sample at ({0}, {1})", (int)projectile.Position.x, (int)projectile.Position.y);
             }
 

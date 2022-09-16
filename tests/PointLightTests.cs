@@ -6,7 +6,7 @@ public class PointLightTests
     [Fact]
     public void PointLightConstruction()
     {
-        var intensity = new Color(1, 1, 1);
+        var intensity = Color.White;
         var position = Tuple.NewPoint(0, 0, 0);
 
         var light = new PointLight(position, intensity);

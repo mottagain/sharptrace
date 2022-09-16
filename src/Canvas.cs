@@ -26,7 +26,7 @@ namespace SharpTrace
                 if (x >= 0 && x < _width && y >=0 && y < _height) {
                     return _pixels[x, y];
                 }
-                return new Color(0, 0, 0);
+                return Color.Black;
             }
             set
             {

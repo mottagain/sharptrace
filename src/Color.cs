@@ -16,6 +16,9 @@ namespace SharpTrace
         public float g;
         public float b;
 
+        public static readonly Color Black = new Color(0, 0, 0);
+        public static readonly Color White = new Color(1, 1, 1);
+
         public static bool operator == (Color lhs, Color rhs) {
             return 
                 MathExt.Near(lhs.r, rhs.r) &&

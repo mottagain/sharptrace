@@ -36,6 +36,61 @@ public class WorldTests
         Assert.True(MathExt.Near(xs[3].Time, 6f));
     }
 
+    [Fact]
+    public void ShadingAnIntersection()
+    {
+        var w = CreateDefaultTestWorld();
+        var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
+        var shape = w.Objects.First();
+        var i = new Intersection(4, shape);
+
+        var comps = i.PrepareComputations(r);
+        var c = w.ShadeHit(comps);
+
+        Assert.True(c == new Color(0.38066f, 0.47583f, 0.2855f));
+    }
+
+    [Fact]
+    public void ShadingAnIntersectionFromInside()
+    {
+        var w = CreateDefaultTestWorld();
+        w.Light = new PointLight(Tuple.NewPoint(0, 0.25f, 0), Color.White);
+        var r = new Ray(Tuple.NewPoint(0, 0, 0), Tuple.NewVector(0, 0, 1));
+        var shape = w.Objects.Last();
+        var i = new Intersection(0.5f, shape);
+
+        var comps = i.PrepareComputations(r);
+        var c = w.ShadeHit(comps);
+
+        Assert.True(c == new Color(0.90498f, 0.90498f, 0.90498f));
+    }
+
+    [Fact]
+    public void ColorWhenRayHits()
+    {
+        var w = CreateDefaultTestWorld();
+        var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
+
+        var c = w.ColorAt(r);
+
+        Assert.True(c == new Color(0.38066f, 0.47583f, 0.2855f));
+    }
+
+    [Fact]
+    public void ColorWhenIntersectionBehindRay() 
+    {
+        var w = CreateDefaultTestWorld();
+        var outer = w.Objects.First();
+        outer.Material.Ambient = 1f;
+        var inner = w.Objects.Last();
+        inner.Material.Ambient = 1f;
+        var r = new Ray(Tuple.NewPoint(0, 0, 0.75f), Tuple.NewVector(0, 0, -1));
+
+        var c = w.ColorAt(r);
+
+        Assert.True(c == inner.Material.Color);
+    }
+
     private static World CreateDefaultTestWorld()
     {
         var result = new World();
@@ -50,7 +105,7 @@ public class WorldTests
         s2.Transform = Matrix.Scaling(0.5f, 0.5f, 0.5f);
         result.Objects.Add(s2);
 
-        result.Light = new PointLight(Tuple.NewPoint(-10, 10, -10), new Color(1, 1, 1));
+        result.Light = new PointLight(Tuple.NewPoint(-10, 10, -10), Color.White);
 
         return result;
     }

@@ -5,7 +5,7 @@ namespace SharpTrace
     {
         public Material()
         {
-            Color = new Color(1, 1, 1);
+            Color = Color.White;
             Ambient = 0.1f;
             Diffuse = 0.9f;
             Specular = 0.9f;
@@ -35,8 +35,8 @@ namespace SharpTrace
             var lightDotNormal = Tuple.Dot(lightv, normalv);
             if (lightDotNormal < 0)
             {
-                diffuse = new Color(0, 0, 0);
-                specular = new Color(0, 0, 0);
+                diffuse = Color.Black;
+                specular = Color.Black;
             }
             else
             {
@@ -47,7 +47,7 @@ namespace SharpTrace
 
                 if (reflectDotEye <= 0) 
                 {
-                    specular = new Color(0, 0, 0);
+                    specular = Color.Black;
                 }
                 else
                 {

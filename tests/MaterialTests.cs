@@ -8,7 +8,7 @@ public class MaterialTests
     {
         var m = new Material();
         
-        Assert.True(m.Color == new Color(1, 1, 1), "Default color.");
+        Assert.True(m.Color == Color.White, "Default color.");
         Assert.True(m.Ambient == 0.1f, "Default color.");
         Assert.True(m.Diffuse == 0.9f, "Default diffuse.");
         Assert.True(m.Specular == 0.9f, "Default specular.");
@@ -22,7 +22,7 @@ public class MaterialTests
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, 0, -1);
         var normalv = Tuple.NewVector(0, 0, -1);
-        var light = new PointLight(Tuple.NewPoint(0, 0, -10), new Color(1, 1, 1));
+        var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
 
         var result = m.Lighting(light, position, eyev, normalv);
 
@@ -37,11 +37,11 @@ public class MaterialTests
         float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
         var eyev = Tuple.NewVector(0, sqrtOf2Over2, -sqrtOf2Over2);
         var normalv = Tuple.NewVector(0, 0, -1);
-        var light = new PointLight(Tuple.NewPoint(0, 0, -10), new Color(1, 1, 1));
+        var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
 
         var result = m.Lighting(light, position, eyev, normalv);
 
-        Assert.True(result == new Color(1f, 1f, 1f), "Lighting is at full strength minus specular.");
+        Assert.True(result == Color.White, "Lighting is at full strength minus specular.");
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class MaterialTests
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, 0, -1);
         var normalv = Tuple.NewVector(0, 0, -1);
-        var light = new PointLight(Tuple.NewPoint(0, 10, -10), new Color(1, 1, 1));
+        var light = new PointLight(Tuple.NewPoint(0, 10, -10), Color.White);
 
         var result = m.Lighting(light, position, eyev, normalv);
 
@@ -66,7 +66,7 @@ public class MaterialTests
         float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
         var eyev = Tuple.NewVector(0, -sqrtOf2Over2, -sqrtOf2Over2);
         var normalv = Tuple.NewVector(0, 0, -1);
-        var light = new PointLight(Tuple.NewPoint(0, 10, -10), new Color(1, 1, 1));
+        var light = new PointLight(Tuple.NewPoint(0, 10, -10), Color.White);
 
         var result = m.Lighting(light, position, eyev, normalv);
 
@@ -80,7 +80,7 @@ public class MaterialTests
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, 0, -1);
         var normalv = Tuple.NewVector(0, 0, -1);
-        var light = new PointLight(Tuple.NewPoint(0, 0, 10), new Color(1, 1, 1));
+        var light = new PointLight(Tuple.NewPoint(0, 0, 10), Color.White);
 
         var result = m.Lighting(light, position, eyev, normalv);
 
