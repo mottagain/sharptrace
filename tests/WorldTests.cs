@@ -91,6 +91,59 @@ public class WorldTests
         Assert.True(c == inner.Material.Color);
     }
 
+    [Fact]
+    public void TransformationMatrixForDefaultOrientation()
+    {
+        var from = Tuple.NewPoint(0, 0, 0);
+        var to = Tuple.NewPoint(0, 0, -1);
+        var up = Tuple.NewVector(0, 1, 0);
+
+        var t = Matrix.ViewTransform(from, to, up);
+
+        Assert.True(t == Matrix.Identity(4));
+    }
+
+    [Fact]
+    public void ViewTransformationMatrixLookingInPositiveZ()
+    {
+        var from = Tuple.NewPoint(0, 0, 0);
+        var to = Tuple.NewPoint(0, 0, 1);
+        var up = Tuple.NewVector(0, 1, 0);
+
+        var t = Matrix.ViewTransform(from, to, up);
+
+        Assert.True(t == Matrix.Scaling(-1, 1, -1));
+    }
+
+    [Fact]
+    public void ViewTransformationMovesTheWorld()
+    {
+        var from = Tuple.NewPoint(0, 0, 8);
+        var to = Tuple.NewPoint(0, 0, 0);
+        var up = Tuple.NewVector(0, 1, 0);
+
+        var t = Matrix.ViewTransform(from, to, up);
+
+        Assert.True(t == Matrix.Translation(0, 0, -8));
+    }
+
+    [Fact]
+    public void ViewTransformationArbitraryView()
+    {
+        var from = Tuple.NewPoint(1, 3, 2);
+        var to = Tuple.NewPoint(4, -2, 8);
+        var up = Tuple.NewVector(1, 1, 0);
+
+        var t = Matrix.ViewTransform(from, to, up);
+
+        Assert.True(t == new Matrix(new float[,] { 
+            { -0.50709f, 0.50709f,  0.67612f, -2.36643f }, 
+            {  0.76772f, 0.60609f,  0.12122f, -2.82843f }, 
+            { -0.35857f, 0.59761f, -0.71714f,  0.00000f }, 
+            {  0.00000f, 0.00000f,  0.00000f,  1.00000f }, 
+        }));
+    }
+
     private static World CreateDefaultTestWorld()
     {
         var result = new World();

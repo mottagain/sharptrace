@@ -1,6 +1,7 @@
 
 namespace SharpTrace
 {
+    using System.Diagnostics;
     using System.Runtime.InteropServices;
 
 
@@ -99,6 +100,32 @@ namespace SharpTrace
             result[2, 1] = zy;
             return result;
         }
+
+        public static Matrix ViewTransform(Tuple from, Tuple to, Tuple up)
+        {
+            Debug.Assert(from.IsPoint);
+            Debug.Assert(to.IsPoint);
+            Debug.Assert(up.IsVector);
+
+            var forward = (to - from).Normalize();
+            var upNormalized = up.Normalize();
+            var left = Tuple.Cross(forward, upNormalized);
+            var true_up = Tuple.Cross(left, forward);
+
+            Matrix orientation = Matrix.Identity(4);
+            orientation[0, 0] = left.x;
+            orientation[0, 1] = left.y;
+            orientation[0, 2] = left.z;
+            orientation[1, 0] = true_up.x;
+            orientation[1, 1] = true_up.y;
+            orientation[1, 2] = true_up.z;
+            orientation[2, 0] = -forward.x;
+            orientation[2, 1] = -forward.y;
+            orientation[2, 2] = -forward.z;
+
+            return orientation * Matrix.Translation(-from.x, -from.y, -from.z);
+        }
+
 
         public int Rows { get; private set; }
 
