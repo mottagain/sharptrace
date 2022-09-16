@@ -8,8 +8,8 @@ public class TupleTests
     {
         var tuple = new Tuple { x = 0.0f, y = 0.0f, z = 0.0f, w = 1.0f };
 
-        Assert.True(tuple.IsPoint(), "A tuple with w=1.0 is a point.");
-        Assert.False(tuple.IsVector(), "A tuple with w=1.0 is not a vector.");
+        Assert.True(tuple.IsPoint, "A tuple with w=1.0 is a point.");
+        Assert.False(tuple.IsVector, "A tuple with w=1.0 is not a vector.");
     }
 
     [Fact]
@@ -17,8 +17,8 @@ public class TupleTests
     {
         var tuple = new Tuple { x = 0.0f, y = 0.0f, z = 0.0f, w = 0.0f };
 
-        Assert.True(tuple.IsVector(), "A tuple with w=0.0 is a vector.");
-        Assert.False(tuple.IsPoint(), "A tuple with w=1.0 is not a point.");
+        Assert.True(tuple.IsVector, "A tuple with w=0.0 is a vector.");
+        Assert.False(tuple.IsPoint, "A tuple with w=1.0 is not a point.");
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class TupleTests
         var tuple = Tuple.NewPoint(1.0f, 2.0f, 3.0f);
 
         Assert.True(tuple == new Tuple { x = 1, y = 2, z = 3, w = 1 }, "Tuple.NewPoint matches raw construction.");
-        Assert.True(tuple.IsPoint(), "Tuple.NewPoint creates a point.");
+        Assert.True(tuple.IsPoint, "Tuple.NewPoint creates a point.");
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class TupleTests
         var tuple = Tuple.NewVector(3.0f, 2.0f, 1.0f);
 
         Assert.True(tuple == new Tuple { x = 3, y = 2, z = 1, w = 0 }, "Tuple.NewVector matches raw construction.");
-        Assert.True(tuple.IsVector(), "Tuple.NewVector creates a vector.");
+        Assert.True(tuple.IsVector, "Tuple.NewVector creates a vector.");
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class TupleTests
         var result = a1 + a2;
 
         Assert.True(result == new Tuple { x = 1, y = 1, z = 6, w = 1 }, "Addition of a vector and a point yields correct point.");
-        Assert.True(result.IsPoint(), "Addition of a vector and a point is a point.");
+        Assert.True(result.IsPoint, "Addition of a vector and a point is a point.");
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class TupleTests
         var result = a1 + a2;
 
         Assert.True(result == new Tuple { x = 1, y = 1, z = 6, w = 0 }, "Addition of a vector and a vector yields correct vector.");
-        Assert.True(result.IsVector(), "Addition of a vector and a vector is a vector.");
+        Assert.True(result.IsVector, "Addition of a vector and a vector is a vector.");
     }
 
     [Fact]
@@ -71,8 +71,8 @@ public class TupleTests
 
         var result = a1 + a2;
 
-        Assert.False(result.IsPoint(), "Addition of a point and point is not a point.");
-        Assert.False(result.IsVector(), "Addition of a point and point is not a vector.");
+        Assert.False(result.IsPoint, "Addition of a point and point is not a point.");
+        Assert.False(result.IsVector, "Addition of a point and point is not a vector.");
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class TupleTests
         var result = a1 - a2;
 
         Assert.True(result == new Tuple { x = -2, y = -4, z = -6, w = 0 }, "Subtraction of a point and a point yields correct point.");
-        Assert.True(result.IsVector(), "Subtraction of a point and point is a vector.");
+        Assert.True(result.IsVector, "Subtraction of a point and point is a vector.");
     }
 
     [Fact]
@@ -104,8 +104,8 @@ public class TupleTests
 
         var result = v - p;
         
-        Assert.False(result.IsPoint(), "Subtraction of a point from a vector isn't a point.");
-        Assert.False(result.IsVector(), "Subtraction of a point from a vector isn't a vector.");
+        Assert.False(result.IsPoint, "Subtraction of a point from a vector isn't a point.");
+        Assert.False(result.IsVector, "Subtraction of a point from a vector isn't a vector.");
     }
 
     [Fact]
@@ -117,7 +117,7 @@ public class TupleTests
         var result = v1 - v2;
 
         Assert.True(result == Tuple.NewVector(-2, -4, -6), "Subtraction of a vector and a vector yields correct point.");
-        Assert.True(result.IsVector(), "Subtraction of a vector and vector is a vector.");
+        Assert.True(result.IsVector, "Subtraction of a vector and vector is a vector.");
     }
 
     [Fact]

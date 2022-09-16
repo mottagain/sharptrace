@@ -1,7 +1,8 @@
 
 namespace SharpTrace
 {
-
+    using System.Diagnostics;
+    
     public class Sphere
     {
         public Sphere()
@@ -45,6 +46,8 @@ namespace SharpTrace
 
         public Tuple NormalAt(Tuple worldPoint)
         {
+            Debug.Assert(worldPoint.IsPoint);
+
             var objectPoint = Transform.Inverse() * worldPoint;
             var objectNormal = objectPoint - Tuple.NewPoint(0, 0, 0);
             var worldNormal = Transform.Inverse().Transpose() * objectNormal;

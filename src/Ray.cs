@@ -1,11 +1,15 @@
 
 namespace SharpTrace
 {
+    using System.Diagnostics;
 
     public class Ray
     {
         public Ray(Tuple origin, Tuple direction)
         {
+            Debug.Assert(origin.IsPoint);
+            Debug.Assert(direction.IsVector);
+
             _origin = origin;
             _direction = direction;
         }
@@ -28,7 +32,9 @@ namespace SharpTrace
 
         public Tuple Position(float t)
         {
-            return _origin + _direction * t;
+            var result = _origin + _direction * t;
+            Debug.Assert(result.IsPoint);
+            return result;
         }
 
         public Ray Transform(Matrix m) 

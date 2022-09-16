@@ -2,9 +2,11 @@
 namespace SharpTrace
 {
 
+    using System.Diagnostics;
+
     public class Intersection : IComparable<Intersection>
     {
-        public Intersection(float t, Sphere obj) 
+        public Intersection(float t, Sphere obj)
         {
             Time = t;
             Object = obj;
@@ -14,7 +16,7 @@ namespace SharpTrace
 
         public Sphere Object { get; private set; }
 
-        public Computations PrepareComputations(Ray r) 
+        public Computations PrepareComputations(Ray r)
         {
             var result = new Computations();
 
@@ -37,7 +39,7 @@ namespace SharpTrace
             return result;
         }
 
-        public int CompareTo(Intersection? other) 
+        public int CompareTo(Intersection? other)
         {
             if (other == null) return 1;
 
@@ -47,11 +49,11 @@ namespace SharpTrace
 
     public class Intersections : List<Intersection>
     {
-        public Intersection? Hit() 
+        public Intersection? Hit()
         {
             Sort();
 
-            foreach (var i in this) 
+            foreach (var i in this)
             {
                 if (i.Time >= 0f)
                 {
@@ -69,13 +71,53 @@ namespace SharpTrace
 
         public Sphere? Object { get; set; }
 
-        public Tuple Point { get; set; }
+        public Tuple Point
+        {
+            get
+            {
+                return _point;
+            }
 
-        public Tuple EyeVector { get; set; }
+            set
+            {
+                Debug.Assert(value.IsPoint);
+                _point = value;
+            }
+        }
 
-        public Tuple NormalVector { get; set; }
+        public Tuple EyeVector
+        {
+            get
+            {
+                return _eyeVector;
+            }
+
+            set
+            {
+                Debug.Assert(value.IsVector);
+                _eyeVector = value;
+            }
+        }
+
+        public Tuple NormalVector
+        {
+            get
+            {
+                return _normalVector;
+            }
+
+            set
+            {
+                Debug.Assert(value.IsVector);
+                _normalVector = value;
+            }
+        }
 
         public bool Inside { get; set; }
+
+        private Tuple _point;
+        private Tuple _eyeVector;
+        private Tuple _normalVector;
     }
 
 }

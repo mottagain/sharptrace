@@ -1,11 +1,14 @@
 
 namespace SharpTrace
 {
+    using System.Diagnostics;
 
     public class PointLight
     {
         public PointLight(Tuple position, Color intensity) 
         {
+            Debug.Assert(position.IsPoint);
+            
             _position = position;
             _intensity = intensity;
         }

@@ -1,6 +1,8 @@
 namespace SharpTrace
 {
 
+    using System.Diagnostics;
+
     public class Material
     {
         public Material()
@@ -24,6 +26,10 @@ namespace SharpTrace
 
         public Color Lighting(PointLight light, Tuple point, Tuple eyev, Tuple normalv)
         {
+            Debug.Assert(point.IsPoint);
+            Debug.Assert(eyev.IsVector);
+            Debug.Assert(normalv.IsVector);
+
             var effectiveColor = Color.HardamardProduct(this.Color, light.Intensity);
 
             var lightv = (light.Position - point).Normalize();

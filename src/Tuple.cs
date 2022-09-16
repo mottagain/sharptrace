@@ -1,5 +1,6 @@
 namespace SharpTrace
 {
+    using System.Diagnostics;
     using System.Runtime.InteropServices;
 
 
@@ -105,11 +106,17 @@ namespace SharpTrace
 
         public static float Dot(Tuple lhs, Tuple rhs)
         {
+            Debug.Assert(lhs.IsVector);
+            Debug.Assert(rhs.IsVector);
+
             return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
         }
 
         public static Tuple Cross(Tuple lhs, Tuple rhs)
         {
+            Debug.Assert(lhs.IsVector);
+            Debug.Assert(rhs.IsVector);
+
             return NewVector(
                 lhs.y * rhs.z - lhs.z * rhs.y,
                 lhs.z * rhs.x - lhs.x * rhs.z,
@@ -119,6 +126,8 @@ namespace SharpTrace
 
         public Tuple Reflect(Tuple normal)
         {
+            Debug.Assert(normal.IsVector);
+
             return this - normal * 2 * Tuple.Dot(this, normal);
         }
 
@@ -148,14 +157,20 @@ namespace SharpTrace
             return result;
         }
 
-        public bool IsPoint()
+        public bool IsPoint
         {
-            return MathExt.Near(w, 1.0f);
+            get
+            {
+                return MathExt.Near(w, 1.0f);
+            }
         }
 
-        public bool IsVector()
+        public bool IsVector
         {
-            return MathExt.Near(w, 0.0f);
+            get
+            {
+                return MathExt.Near(w, 0.0f);
+            }
         }
     }
 }
