@@ -48,7 +48,7 @@ namespace SharpTrace
                 {
                     Color sourceColor = _pixels[x, y];
                     var pixel = System.Drawing.Color.FromArgb(ToByte(sourceColor.r), ToByte(sourceColor.g), ToByte(sourceColor.b));
-                    bitmap.SetPixel(x, _height - y - 1, pixel);
+                    bitmap.SetPixel(x, y, pixel);
                 }
             }
 
