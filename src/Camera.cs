@@ -2,7 +2,7 @@ namespace SharpTrace
 {
     public class Camera
     {
-        public Camera(int width, int height, float fov) 
+        public Camera(int width, int height, float fov)
         {
             this.Width = width;
             this.Height = height;
@@ -11,12 +11,12 @@ namespace SharpTrace
             this.Transform = Matrix.Identity(4);
 
             var halfView = (float)Math.Tan(fov / 2.0);
-            if (this.Aspect >= 1f) 
+            if (this.Aspect >= 1f)
             {
                 this._halfWidth = halfView;
                 this._halfHeight = halfView / this.Aspect;
             }
-            else 
+            else
             {
                 this._halfWidth = halfView * this.Aspect;
                 this._halfHeight = halfView;
@@ -37,7 +37,7 @@ namespace SharpTrace
 
         public float PixelSize { get; private set; }
 
-        public Ray RayForPixel(int x, int y) 
+        public Ray RayForPixel(int x, int y)
         {
             var xOffset = ((float)x + 0.5f) * this.PixelSize;
             var yOffset = ((float)y + 0.5f) * this.PixelSize;
@@ -49,7 +49,25 @@ namespace SharpTrace
             var origin = this.Transform.Inverse() * Tuple.NewPoint(0, 0, 0);
             var direction = (pixel - origin).Normalize();
 
-            return new Ray(origin, direction);;
+            return new Ray(origin, direction);
+        }
+
+        public Canvas Render(World w)
+        {
+            var image = new Canvas(this.Width, this.Height);
+
+            for (int y = 0; y < this.Height; y++)
+            {
+                for (int x = 0; x < this.Width; x++)
+                {
+                    var r = this.RayForPixel(x, y);
+                    var color = w.ColorAt(r);
+                    image[x, y] = color;
+                }
+
+            }
+
+            return image;
         }
 
         private float _halfWidth;

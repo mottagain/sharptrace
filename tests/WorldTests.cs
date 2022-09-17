@@ -13,7 +13,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void DefaultTestWorld() 
+    public void DefaultTestWorld()
     {
         var w = CreateDefaultTestWorld();
 
@@ -22,11 +22,11 @@ public class WorldTests
     }
 
     [Fact]
-    public void IntersectAWorldWithARay() 
+    public void IntersectAWorldWithARay()
     {
         var w = CreateDefaultTestWorld();
         var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
-        
+
         var xs = w.Intersects(r);
 
         Assert.True(xs.Count == 4, "Expected 4 intersections along target ray.");
@@ -77,7 +77,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void ColorWhenIntersectionBehindRay() 
+    public void ColorWhenIntersectionBehindRay()
     {
         var w = CreateDefaultTestWorld();
         var outer = w.Objects.First();
@@ -136,24 +136,41 @@ public class WorldTests
 
         var t = Matrix.ViewTransform(from, to, up);
 
-        Assert.True(t == new Matrix(new float[,] { 
-            { -0.50709f, 0.50709f,  0.67612f, -2.36643f }, 
-            {  0.76772f, 0.60609f,  0.12122f, -2.82843f }, 
-            { -0.35857f, 0.59761f, -0.71714f,  0.00000f }, 
-            {  0.00000f, 0.00000f,  0.00000f,  1.00000f }, 
+        Assert.True(t == new Matrix(new float[,] {
+            { -0.50709f, 0.50709f,  0.67612f, -2.36643f },
+            {  0.76772f, 0.60609f,  0.12122f, -2.82843f },
+            { -0.35857f, 0.59761f, -0.71714f,  0.00000f },
+            {  0.00000f, 0.00000f,  0.00000f,  1.00000f },
         }));
     }
+
+    [Fact]
+    public void RenderWorldWithCamera()
+    {
+        var w = CreateDefaultTestWorld();
+        var c = new Camera(11, 11, MathExt.PiOver2);
+        var from = Tuple.NewPoint(0, 0, -5);
+        var to = Tuple.NewPoint(0, 0, 0);
+        var up = Tuple.NewVector(0, 1, 0);
+        c.Transform = Matrix.ViewTransform(from, to, up);
+
+        var image = c.Render(w);
+
+        Assert.True(image[5, 5] == new Color(0.38066f, 0.47583f, 0.2855f));
+    }
+
+
 
     private static World CreateDefaultTestWorld()
     {
         var result = new World();
-        
+
         var s1 = new Sphere();
         s1.Material.Color = new Color(0.8f, 1.0f, 0.6f);
         s1.Material.Diffuse = 0.7f;
         s1.Material.Specular = 0.2f;
         result.Objects.Add(s1);
-        
+
         var s2 = new Sphere();
         s2.Transform = Matrix.Scaling(0.5f, 0.5f, 0.5f);
         result.Objects.Add(s2);
