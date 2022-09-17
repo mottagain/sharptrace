@@ -237,9 +237,8 @@ public class TupleTests
     [Fact]
     public void ReflectVectorOffSlantedSurface() 
     {
-        float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
         var v = Tuple.NewVector(0, -1, 0);
-        var n = Tuple.NewVector(sqrtOf2Over2, sqrtOf2Over2, 0);
+        var n = Tuple.NewVector(MathExt.Sqrt2Over2, MathExt.Sqrt2Over2, 0);
 
         var r = v.Reflect(n);
 

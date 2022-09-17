@@ -34,8 +34,7 @@ public class MaterialTests
     {
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
-        float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
-        var eyev = Tuple.NewVector(0, sqrtOf2Over2, -sqrtOf2Over2);
+        var eyev = Tuple.NewVector(0, MathExt.Sqrt2Over2, -MathExt.Sqrt2Over2);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
 
@@ -63,8 +62,7 @@ public class MaterialTests
     {
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
-        float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
-        var eyev = Tuple.NewVector(0, -sqrtOf2Over2, -sqrtOf2Over2);
+        var eyev = Tuple.NewVector(0, -MathExt.Sqrt2Over2, -MathExt.Sqrt2Over2);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 10, -10), Color.White);
 

@@ -355,7 +355,7 @@ public class MatrixTests
         var halfQuarter = Matrix.RotationX(Math.PI / 4);
         var fullQuarter = Matrix.RotationX(Math.PI / 2);
 
-        Assert.True(halfQuarter * p == Tuple.NewPoint(0f, (float)Math.Sqrt(2.0) / 2f, (float)Math.Sqrt(2.0) / 2f), "Rotation about X of a point through a translation matrix works as expected.");
+        Assert.True(halfQuarter * p == Tuple.NewPoint(0f, MathExt.Sqrt2Over2, MathExt.Sqrt2Over2), "Rotation about X of a point through a translation matrix works as expected.");
         Assert.True(fullQuarter * p == Tuple.NewPoint(0f, 0f, 1f), "Rotation about X of a point through a translation matrix works as expected.");
     }    
 
@@ -366,7 +366,7 @@ public class MatrixTests
         var halfQuarter = Matrix.RotationX(Math.PI / 4);
         var inverse = halfQuarter.Inverse();
 
-        Assert.True(inverse * p == Tuple.NewPoint(0f, (float)Math.Sqrt(2.0) / 2f, -(float)Math.Sqrt(2.0) / 2f), "Inverse rotation about X of a point through a translation matrix works as expected.");
+        Assert.True(inverse * p == Tuple.NewPoint(0f, MathExt.Sqrt2Over2, -MathExt.Sqrt2Over2), "Inverse rotation about X of a point through a translation matrix works as expected.");
     }
 
     [Fact]
@@ -376,7 +376,7 @@ public class MatrixTests
         var halfQuarter = Matrix.RotationY(Math.PI / 4);
         var fullQuarter = Matrix.RotationY(Math.PI / 2);
 
-        Assert.True(halfQuarter * p == Tuple.NewPoint((float)Math.Sqrt(2.0) / 2f, 0, (float)Math.Sqrt(2.0) / 2f), "Rotation about Y of a point through a translation matrix works as expected.");
+        Assert.True(halfQuarter * p == Tuple.NewPoint(MathExt.Sqrt2Over2, 0, MathExt.Sqrt2Over2), "Rotation about Y of a point through a translation matrix works as expected.");
         Assert.True(fullQuarter * p == Tuple.NewPoint(1f, 0f, 0f), "Rotation about Y of a point through a translation matrix works as expected.");
     }    
 
@@ -387,7 +387,7 @@ public class MatrixTests
         var halfQuarter = Matrix.RotationZ(Math.PI / 4);
         var fullQuarter = Matrix.RotationZ(Math.PI / 2);
 
-        Assert.True(halfQuarter * p == Tuple.NewPoint(-(float)Math.Sqrt(2.0) / 2f, (float)Math.Sqrt(2.0) / 2f, 0f), "Rotation about Z of a point through a translation matrix works as expected.");
+        Assert.True(halfQuarter * p == Tuple.NewPoint(-MathExt.Sqrt2Over2, MathExt.Sqrt2Over2, 0f), "Rotation about Z of a point through a translation matrix works as expected.");
         Assert.True(fullQuarter * p == Tuple.NewPoint(-1f, 0f, 0f), "Rotation about Z of a point through a translation matrix works as expected.");
     }    
 

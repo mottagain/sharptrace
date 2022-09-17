@@ -181,8 +181,7 @@ public class SphereTests
         var s = new Sphere();
         s.Transform = Matrix.Scaling(1f, 0.5f, 1f) * Matrix.RotationZ(Math.PI / 5);
 
-        float sqrtOf2Over2 = (float)Math.Sqrt(2.0) / 2f;
-        var n = s.NormalAt(Tuple.NewPoint(0, sqrtOf2Over2, -sqrtOf2Over2));
+        var n = s.NormalAt(Tuple.NewPoint(0, MathExt.Sqrt2Over2, -MathExt.Sqrt2Over2));
 
         Assert.True(n == Tuple.NewVector(0f, 0.97014f, -0.24254f), "Normal vector on transformed sphere is correct.");
     }
