@@ -45,4 +45,17 @@ public class IntersectionTests
         Assert.True(comps.Inside);
         Assert.True(comps.NormalVector == Tuple.NewVector(0, 0, -1));
     }
+
+    [Fact]
+    public void HitShouldOffsetPoint()
+    {
+        var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
+        var s = new Sphere();
+        s.Transform = Matrix.Translation(0, 0, 1);
+        var i = new Intersection(5, s);
+        
+        var comps = i.PrepareComputations(r);
+
+        Assert.True(comps.OverPoint.z < -MathExt.Epsilon / 2f);
+    }
 }

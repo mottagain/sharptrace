@@ -24,7 +24,7 @@ namespace SharpTrace
 
         public float Shininess { get; set; }
 
-        public Color Lighting(PointLight light, Tuple point, Tuple eyev, Tuple normalv)
+        public Color Lighting(PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
         {
             Debug.Assert(point.IsPoint);
             Debug.Assert(eyev.IsVector);
@@ -35,30 +35,33 @@ namespace SharpTrace
             var lightv = (light.Position - point).Normalize();
 
             Color ambient = effectiveColor * this.Ambient;
-            Color diffuse;
-            Color specular;
+            Color diffuse = new Color(0, 0, 0);
+            Color specular = new Color(0, 0, 0);
 
-            var lightDotNormal = Tuple.Dot(lightv, normalv);
-            if (lightDotNormal < 0)
+            if (!inShadow) 
             {
-                diffuse = Color.Black;
-                specular = Color.Black;
-            }
-            else
-            {
-                diffuse = effectiveColor * this.Diffuse * lightDotNormal;
-
-                var reflectv = (-lightv).Reflect(normalv);
-                var reflectDotEye = Tuple.Dot(reflectv, eyev);
-
-                if (reflectDotEye <= 0) 
+                var lightDotNormal = Tuple.Dot(lightv, normalv);
+                if (lightDotNormal < 0)
                 {
+                    diffuse = Color.Black;
                     specular = Color.Black;
                 }
                 else
                 {
-                    var factor = (float)Math.Pow(reflectDotEye, this.Shininess);
-                    specular = light.Intensity * this.Specular * factor;
+                    diffuse = effectiveColor * this.Diffuse * lightDotNormal;
+
+                    var reflectv = (-lightv).Reflect(normalv);
+                    var reflectDotEye = Tuple.Dot(reflectv, eyev);
+
+                    if (reflectDotEye <= 0) 
+                    {
+                        specular = Color.Black;
+                    }
+                    else
+                    {
+                        var factor = (float)Math.Pow(reflectDotEye, this.Shininess);
+                        specular = light.Intensity * this.Specular * factor;
+                    }
                 }
             }
 

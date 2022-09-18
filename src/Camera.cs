@@ -58,13 +58,11 @@ namespace SharpTrace
 
             for (int y = 0; y < this.Height; y++)
             {
-                for (int x = 0; x < this.Width; x++)
-                {
+                Parallel.For(0, this.Width - 1, (int x, ParallelLoopState loopState) => {
                     var r = this.RayForPixel(x, y);
                     var color = w.ColorAt(r);
                     image[x, y] = color;
-                }
-
+                });
             }
 
             return image;

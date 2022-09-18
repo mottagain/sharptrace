@@ -110,7 +110,7 @@ namespace SharpTrace
                         var normal = hit.Object.NormalAt(point);
                         var eye = -r.Direction;
 
-                        var color = hit.Object.Material.Lighting(light, point, eye, normal);
+                        var color = hit.Object.Material.Lighting(light, point, eye, normal, false);
                         canvas[x, y] = color;
                     }
                 }

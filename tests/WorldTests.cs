@@ -159,6 +159,63 @@ public class WorldTests
         Assert.True(image[5, 5] == new Color(0.38066f, 0.47583f, 0.2855f));
     }
 
+    [Fact]
+    public void NoShadow() 
+    {
+        var w = CreateDefaultTestWorld();
+        var p = Tuple.NewPoint(0, 10, 0);
+
+        Assert.False(w.IsShadowed(p));
+    }
+
+    [Fact]
+    public void ShadowWhenObjectBetweenPointAndLight() 
+    {
+        var w = CreateDefaultTestWorld();
+        var p = Tuple.NewPoint(10, -10, 10);
+
+        Assert.True(w.IsShadowed(p));
+    }
+
+    [Fact]
+    public void NoShadowWhenObjectBehindLight() 
+    {
+        var w = CreateDefaultTestWorld();
+        var p = Tuple.NewPoint(-20, 20, -20);
+
+        Assert.False(w.IsShadowed(p));
+    }
+
+    [Fact]
+    public void NoShadowWhenObjectBehindPoint() 
+    {
+        var w = CreateDefaultTestWorld();
+        var p = Tuple.NewPoint(-2, 2, -2);
+
+        Assert.False(w.IsShadowed(p));
+    }
+
+    [Fact]
+    public void ShadeHitGivenAnIntersectionInShadow()
+    {
+        var w = new World();
+        w.Light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
+
+        var s1 = new Sphere();
+        w.Objects.Add(s1);
+
+        var s2 = new Sphere();
+        s2.Transform = Matrix.Translation(0, 0, 10);
+        w.Objects.Add(s2);
+
+        var r = new Ray(Tuple.NewPoint(0, 0, 5), Tuple.NewVector(0, 0, 1));
+        var i = new Intersection(4, s2);
+
+        var comps = i.PrepareComputations(r);
+        var color = w.ShadeHit(comps);
+
+        Assert.True(color == new Color(0.1f, 0.1f, 0.1f));
+    }
 
 
     private static World CreateDefaultTestWorld()

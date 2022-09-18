@@ -36,6 +36,8 @@ namespace SharpTrace
                 result.Inside = false;
             }
 
+            result.OverPoint = result.Point + result.NormalVector * 0.005f;
+
             return result;
         }
 
@@ -85,6 +87,19 @@ namespace SharpTrace
             }
         }
 
+        public Tuple OverPoint
+        {
+            get
+            {
+                return _overPoint;
+            }
+            set
+            {
+                Debug.Assert(value.IsPoint);
+                _overPoint = value;
+            }
+        }
+
         public Tuple EyeVector
         {
             get
@@ -116,6 +131,7 @@ namespace SharpTrace
         public bool Inside { get; set; }
 
         private Tuple _point;
+        private Tuple _overPoint;
         private Tuple _eyeVector;
         private Tuple _normalVector;
     }
