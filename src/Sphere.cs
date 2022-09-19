@@ -36,16 +36,11 @@ namespace SharpTrace
             return new Intersections { new Intersection(t1, this), new Intersection(t2, this) };
         }
 
-        public Tuple NormalAt(Tuple worldPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint)
         {
-            Debug.Assert(worldPoint.IsPoint);
+            Debug.Assert(localPoint.IsPoint);
 
-            var objectPoint = Transform.Inverse() * worldPoint;
-            var objectNormal = objectPoint - Tuple.NewPoint(0, 0, 0);
-            var worldNormal = Transform.Inverse().Transpose() * objectNormal;
-            worldNormal.w = 0;
-
-            return worldNormal.Normalize();
+            return localPoint - Tuple.NewPoint(0, 0, 0);
         }
     }
 }
