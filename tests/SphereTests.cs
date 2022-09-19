@@ -75,18 +75,6 @@ public class SphereTests
     }
 
     [Fact]
-    public void ChangingASpheresTransform()
-    {
-        var s = new Sphere();
-
-        var t = Matrix.Translation(2, 3, 4);
-
-        s.Transform = t;
-
-        Assert.True(s.Transform == t, "Setting a transform yeilds expected value.");
-    }
-
-    [Fact]
     public void RayIntersectsScaledSphere()
     {
         var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
@@ -185,26 +173,4 @@ public class SphereTests
 
         Assert.True(n == Tuple.NewVector(0f, 0.97014f, -0.24254f), "Normal vector on transformed sphere is correct.");
     }
-
-    [Fact]
-    public void SphereHasDefaultMaterial() 
-    {
-        var s = new Sphere();
-
-        var m = s.Material;
-
-        Assert.True(m.Specular == 0.9f, "Spot check sphere is constructed with a default material.");
-    }
-
-    [Fact]
-    public void SphereMayBeAssignedMaterial() 
-    {
-        var s = new Sphere();
-        var m = new Material();
-
-        s.Material = m;
-
-        Assert.True(s.Material == m, "Sphere may be assigned a material.");
-    }
-
 }
