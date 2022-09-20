@@ -13,7 +13,7 @@ class TestShape : Shape
     public override Tuple LocalNormalAt(Tuple objectPoint)
     {
         this.LocalPoint = objectPoint;
-        return Tuple.NewPoint(0, 0, 0);
+        return objectPoint;
     }
 
 
@@ -91,4 +91,25 @@ public class ShapeTests
         Assert.True(s.LocalRay!.Direction == Tuple.NewVector(0, 0, 1));
     }
 
+    [Fact]
+    public void NormalOnTranslatedShape()
+    {
+        var s = new TestShape();
+        s.Transform = Matrix.Translation(0, 1, 0);
+
+        var n = s.NormalAt(Tuple.NewPoint(0f, 1.70711f, -0.70711f));
+
+        Assert.True(n == Tuple.NewVector(0f, 0.70711f, -0.70711f), "Normal vector on translated shape is correct.");
+    }
+
+    [Fact]
+    public void NormalOnTransformedShape()
+    {
+        var s = new TestShape();
+        s.Transform = Matrix.Scaling(1f, 0.5f, 1f) * Matrix.RotationZ(Math.PI / 5);
+
+        var n = s.NormalAt(Tuple.NewPoint(0, MathExt.Sqrt2Over2, -MathExt.Sqrt2Over2));
+
+        Assert.True(n == Tuple.NewVector(0f, 0.97014f, -0.24254f), "Normal vector on transformed shape is correct.");
+    }
 }

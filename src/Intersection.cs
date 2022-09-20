@@ -6,7 +6,7 @@ namespace SharpTrace
 
     public class Intersection : IComparable<Intersection>
     {
-        public Intersection(float t, Sphere obj)
+        public Intersection(float t, Shape obj)
         {
             Time = t;
             Object = obj;
@@ -14,7 +14,7 @@ namespace SharpTrace
 
         public float Time { get; private set; }
 
-        public Sphere Object { get; private set; }
+        public Shape Object { get; private set; }
 
         public Computations PrepareComputations(Ray r)
         {
@@ -71,7 +71,7 @@ namespace SharpTrace
     {
         public float Time { get; set; }
 
-        public Sphere? Object { get; set; }
+        public Shape? Object { get; set; }
 
         public Tuple Point
         {
