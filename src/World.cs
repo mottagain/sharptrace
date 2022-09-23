@@ -45,7 +45,7 @@ namespace SharpTrace
             if (Light != null)
             {
                 bool isShadowed = this.IsShadowed(comps.OverPoint);
-                return comps.Object!.Material.Lighting(Light, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
+                return comps.Object!.Material.Lighting(comps.Object, Light, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
             }
 
             return Color.Black;

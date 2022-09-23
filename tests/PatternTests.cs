@@ -44,4 +44,42 @@ public class PatternTests
         Assert.True(p.StripeAt(Tuple.NewPoint(-1, 0, 0)) == Color.Black);
         Assert.True(p.StripeAt(Tuple.NewPoint(-1.1f, 0, 0)) == Color.White);
     }
+
+    [Fact]
+    public void StripesWithObjectTransformation() 
+    {
+        var obj = new Sphere();
+        obj.Transform = Matrix.Scaling(2, 2, 2);
+        var pattern = new StripePattern(Color.White, Color.Black);
+
+        var c = pattern.StripeAtObject(obj, Tuple.NewPoint(1.5f, 0, 0));
+
+        Assert.True(c == Color.White);
+    }
+
+    [Fact]
+    public void StripesWithPatternTransformation()
+    {
+        var obj = new Sphere();
+        var pattern = new StripePattern(Color.White, Color.Black);
+        pattern.Transform = Matrix.Scaling(2, 2, 2);
+
+        var c = pattern.StripeAtObject(obj, Tuple.NewPoint(1.5f, 0, 0));
+
+        Assert.True(c == Color.White);
+    }
+
+    [Fact]
+    public void StripesWithBothObjectAndPatternTransformation()
+    {
+        var obj = new Sphere();
+        obj.Transform = Matrix.Scaling(2, 2, 2);
+        var pattern = new StripePattern(Color.White, Color.Black);
+        pattern.Transform = Matrix.Translation(0.5f, 0, 0);
+
+        var c = pattern.StripeAtObject(obj, Tuple.NewPoint(2.5f, 0, 0));
+
+        Assert.True(c == Color.White);
+    }
+
 }

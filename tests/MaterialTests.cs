@@ -18,13 +18,14 @@ public class MaterialTests
     [Fact]
     public void LightingWithEyeBetweenLightAndSurface()
     {
+        var obj = new Sphere();
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, 0, -1);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
 
-        var result = m.Lighting(light, position, eyev, normalv, false);
+        var result = m.Lighting(obj, light, position, eyev, normalv, false);
 
         Assert.True(result == new Color(1.9f, 1.9f, 1.9f), "Lighting is at full strength.");
     }
@@ -32,13 +33,14 @@ public class MaterialTests
     [Fact]
     public void LightingWithEyeBetweenLightAndSurfaceOffset45()
     {
+        var obj = new Sphere();
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, MathExt.Sqrt2Over2, -MathExt.Sqrt2Over2);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
 
-        var result = m.Lighting(light, position, eyev, normalv, false);
+        var result = m.Lighting(obj, light, position, eyev, normalv, false);
 
         Assert.True(result == Color.White, "Lighting is at full strength minus specular.");
     }
@@ -46,13 +48,14 @@ public class MaterialTests
     [Fact]
     public void LightingWithEyeOppositeSurfaceOffset45()
     {
+        var obj = new Sphere();
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, 0, -1);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 10, -10), Color.White);
 
-        var result = m.Lighting(light, position, eyev, normalv, false);
+        var result = m.Lighting(obj, light, position, eyev, normalv, false);
 
         Assert.True(result == new Color(0.7364f, 0.7364f, 0.7364f), "Lighting is at full strength minus specular.");
     }
@@ -60,13 +63,14 @@ public class MaterialTests
     [Fact]
     public void LightingWithEyeInPathOfReflectionVector()
     {
+        var obj = new Sphere();
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, -MathExt.Sqrt2Over2, -MathExt.Sqrt2Over2);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 10, -10), Color.White);
 
-        var result = m.Lighting(light, position, eyev, normalv, false);
+        var result = m.Lighting(obj, light, position, eyev, normalv, false);
 
         Assert.True(result == new Color(1.6364f, 1.6364f, 1.6364f), "Lighting where eye is in the path of the relfection vector.");
     }
@@ -74,13 +78,14 @@ public class MaterialTests
     [Fact]
     public void LightingWithLightBehindSurface()
     {
+        var obj = new Sphere();
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, 0, -1);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 0, 10), Color.White);
 
-        var result = m.Lighting(light, position, eyev, normalv, false);
+        var result = m.Lighting(obj, light, position, eyev, normalv, false);
 
         Assert.True(result == new Color(0.1f, 0.1f, 0.1f), "Lighting with light behind surface.");
     }
@@ -88,13 +93,14 @@ public class MaterialTests
     [Fact]
     public void LightingWithTheSurfaceInShadow()
     {
+        var obj = new Sphere();
         var m = new Material();
         var position = Tuple.NewPoint(0, 0, 0);
         var eyev = Tuple.NewVector(0, 0, -1);
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
 
-        var result = m.Lighting(light, position, eyev, normalv, true);
+        var result = m.Lighting(obj, light, position, eyev, normalv, true);
 
         Assert.True(result == new Color(0.1f, 0.1f, 0.1f), "Lighting is only ambient in shadow.");
     }
@@ -102,6 +108,7 @@ public class MaterialTests
     [Fact]
     public void LightingWithAPatternApplied()
     {
+        var obj = new Sphere();
         var m = new Material();
         m.Pattern = new StripePattern(Color.White, Color.Black);
         m.Ambient = 1;
@@ -111,8 +118,8 @@ public class MaterialTests
         var normalv = Tuple.NewVector(0, 0, -1);
         var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
 
-        var c1 = m.Lighting(light, Tuple.NewPoint(0.9f, 0, 0), eyev, normalv, false);
-        var c2 = m.Lighting(light, Tuple.NewPoint(1.1f, 0, 0), eyev, normalv, false);
+        var c1 = m.Lighting(obj, light, Tuple.NewPoint(0.9f, 0, 0), eyev, normalv, false);
+        var c2 = m.Lighting(obj, light, Tuple.NewPoint(1.1f, 0, 0), eyev, normalv, false);
 
         Assert.True(c1 == Color.White);
         Assert.True(c2 == Color.Black);

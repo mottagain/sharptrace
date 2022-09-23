@@ -8,8 +8,8 @@ namespace SharpTrace
         {
             // DrawClockHourMarkers();
             // Trajectory();
-            //RayCastToSphere();
-            RenderFirstScene();
+            RayCastToSphere();
+            //RenderFirstScene();
         }
 
         private static void RenderFirstScene()
@@ -72,7 +72,9 @@ namespace SharpTrace
             var canvas = new Canvas(canvasPixels, canvasPixels);
 
             var s = new Sphere();
-            s.Material.Color = new Color(1f, 0.2f, 1f);
+            s.Transform = Matrix.RotationZ(MathExt.PiOver4);
+            s.Material.Pattern = new StripePattern(new Color(1f, 0.1f, 0.1f), Color.White);
+            s.Material.Pattern.Transform = Matrix.Scaling(0.25f, 0.25f, 0.25f);
 
             var lightPosition = Tuple.NewPoint(-10, 10, -10);
             var lightColor = Color.White;
@@ -82,8 +84,7 @@ namespace SharpTrace
             {
                 var worldY = half - pixelSize * y;
 
-                for (int x = 0; x < canvasPixels; x++) 
-                {
+                Parallel.For(0, canvasPixels - 1, (x) => {
                     var worldX = -half + pixelSize * x;
 
                     var wallPosition = Tuple.NewPoint(worldX, worldY, wallZ);
@@ -98,10 +99,10 @@ namespace SharpTrace
                         var normal = hit.Object.NormalAt(point);
                         var eye = -r.Direction;
 
-                        var color = hit.Object.Material.Lighting(light, point, eye, normal, false);
+                        var color = hit.Object.Material.Lighting(hit.Object, light, point, eye, normal, false);
                         canvas[x, y] = color;
                     }
-                }
+                });
             }
 
             canvas.SaveAsJpeg("sphere.jpg");

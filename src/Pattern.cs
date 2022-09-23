@@ -6,7 +6,16 @@ namespace SharpTrace
 
     public abstract class Pattern 
     {
+        public Pattern()
+        {
+            this.Transform = Matrix.Identity(4);
+        }
+
         public abstract Color StripeAt(Tuple point);
+
+        public abstract Color StripeAtObject(Shape obj, Tuple point);
+
+        public Matrix Transform { get; set; }
     }
 
     public class StripePattern : Pattern
@@ -30,6 +39,13 @@ namespace SharpTrace
                 return A;
             }
             return B;
+        }
+
+        public override Color StripeAtObject(Shape obj, Tuple point)
+        {
+            var localPoint = obj.Transform.Inverse() * point;
+            localPoint = this.Transform.Inverse() * localPoint;
+            return StripeAt(localPoint);
         }
 
     }

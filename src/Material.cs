@@ -26,7 +26,7 @@ namespace SharpTrace
 
         public float Shininess { get; set; }
 
-        public Color Lighting(PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
+        public Color Lighting(Shape obj, PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
         {
             Debug.Assert(point.IsPoint);
             Debug.Assert(eyev.IsVector);
@@ -35,7 +35,7 @@ namespace SharpTrace
             var targetColor = this.Color;
             if (this.Pattern != null) 
             {
-                targetColor = this.Pattern.StripeAt(point);
+                targetColor = this.Pattern.StripeAtObject(obj, point);
             }
 
             var effectiveColor = Color.HardamardProduct(targetColor, light.Intensity);
