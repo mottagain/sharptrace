@@ -99,4 +99,23 @@ public class MaterialTests
         Assert.True(result == new Color(0.1f, 0.1f, 0.1f), "Lighting is only ambient in shadow.");
     }
 
+    [Fact]
+    public void LightingWithAPatternApplied()
+    {
+        var m = new Material();
+        m.Pattern = new StripePattern(Color.White, Color.Black);
+        m.Ambient = 1;
+        m.Diffuse = 0;
+        m.Specular = 0;
+        var eyev = Tuple.NewVector(0, 0, -1);
+        var normalv = Tuple.NewVector(0, 0, -1);
+        var light = new PointLight(Tuple.NewPoint(0, 0, -10), Color.White);
+
+        var c1 = m.Lighting(light, Tuple.NewPoint(0.9f, 0, 0), eyev, normalv, false);
+        var c2 = m.Lighting(light, Tuple.NewPoint(1.1f, 0, 0), eyev, normalv, false);
+
+        Assert.True(c1 == Color.White);
+        Assert.True(c2 == Color.Black);
+    }
+
 }

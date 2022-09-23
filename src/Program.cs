@@ -14,28 +14,16 @@ namespace SharpTrace
 
         private static void RenderFirstScene()
         {
-            var floor = new Sphere();
-            floor.Transform = Matrix.Scaling(10f, 0.01f, 10f);
+            var floor = new Plane();
             floor.Material.Color = new Color(1f, 0.9f, 0.9f);
             floor.Material.Specular = 0f;
 
-            var leftWall = new Sphere();
-            leftWall.Transform = 
-                Matrix.Translation(0, 0, 5) *
-                Matrix.RotationY(-MathExt.PiOver4) *
-                Matrix.RotationX(MathExt.PiOver2) *
-                Matrix.Scaling(10f, 0.01f, 10f);
-            leftWall.Material.Color = new Color(1f, 0.9f, 0.9f);
-            leftWall.Material.Specular = 0f;
-
-            var rightWall = new Sphere();
-            rightWall.Transform =
-                Matrix.Translation(0, 0, 5) *
-                Matrix.RotationY(MathExt.PiOver4) *
-                Matrix.RotationX(MathExt.PiOver2) *
-                Matrix.Scaling(10f, 0.01f, 10f);
-            rightWall.Material.Color = new Color(1f, 0.9f, 0.9f);
-            rightWall.Material.Specular = 0f;
+            var wall = new Plane();
+            wall.Transform =
+                Matrix.Translation(0, 0, 10) *
+                Matrix.RotationX(MathExt.PiOver2);
+            wall.Material.Color = new Color(1f, 0.9f, 0.9f);
+            wall.Material.Specular = 0f;
 
             var middle = new Sphere();
             middle.Transform = Matrix.Translation(-0.5f, 1f, 0.5f);
@@ -60,7 +48,7 @@ namespace SharpTrace
             left.Material.Specular = 0.3f;
 
             var w = new World();
-            w.Objects.AddRange(new Sphere[] { floor, leftWall, rightWall, middle, right, left });
+            w.Objects.AddRange(new Shape[] { floor, wall, middle, right, left });
             w.Light = new PointLight(Tuple.NewPoint(-10, 10, -10), Color.White);
 
             var camera = new Camera(1000, 1000, MathExt.PiOver3);

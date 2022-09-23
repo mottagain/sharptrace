@@ -4,7 +4,7 @@ namespace SharpTrace
 
     public class World
     {
-        public List<Sphere> Objects
+        public List<Shape> Objects
         {
             get
             {
@@ -76,6 +76,6 @@ namespace SharpTrace
 
         public PointLight? Light { get; set; }
 
-        private List<Sphere> _objects = new List<Sphere>();
+        private List<Shape> _objects = new List<Shape>();
     }
 }

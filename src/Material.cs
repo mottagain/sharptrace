@@ -16,6 +16,8 @@ namespace SharpTrace
 
         public Color Color { get; set; }
 
+        public Pattern? Pattern { get; set; }
+
         public float Ambient { get; set; }
 
         public float Diffuse { get; set; }
@@ -30,13 +32,19 @@ namespace SharpTrace
             Debug.Assert(eyev.IsVector);
             Debug.Assert(normalv.IsVector);
 
-            var effectiveColor = Color.HardamardProduct(this.Color, light.Intensity);
+            var targetColor = this.Color;
+            if (this.Pattern != null) 
+            {
+                targetColor = this.Pattern.StripeAt(point);
+            }
+
+            var effectiveColor = Color.HardamardProduct(targetColor, light.Intensity);
 
             var lightv = (light.Position - point).Normalize();
 
             Color ambient = effectiveColor * this.Ambient;
-            Color diffuse = new Color(0, 0, 0);
-            Color specular = new Color(0, 0, 0);
+            Color diffuse = Color.Black;
+            Color specular = Color.Black;
 
             if (!inShadow) 
             {
