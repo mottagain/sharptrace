@@ -11,9 +11,14 @@ namespace SharpTrace
             this.Transform = Matrix.Identity(4);
         }
 
-        public abstract Color StripeAt(Tuple point);
+        public abstract Color PatternAt(Tuple point);
 
-        public abstract Color StripeAtObject(Shape obj, Tuple point);
+        public Color PatternAtShape(Shape obj, Tuple point)
+        {
+            var localPoint = obj.Transform.Inverse() * point;
+            localPoint = this.Transform.Inverse() * localPoint;
+            return PatternAt(localPoint);
+        }
 
         public Matrix Transform { get; set; }
     }
@@ -29,7 +34,7 @@ namespace SharpTrace
         public Color A { get; private set; }
         public Color B { get; private set; }
 
-        public override Color StripeAt(Tuple point)
+        public override Color PatternAt(Tuple point)
         {
             Debug.Assert(point.IsPoint);
 
@@ -40,13 +45,5 @@ namespace SharpTrace
             }
             return B;
         }
-
-        public override Color StripeAtObject(Shape obj, Tuple point)
-        {
-            var localPoint = obj.Transform.Inverse() * point;
-            localPoint = this.Transform.Inverse() * localPoint;
-            return StripeAt(localPoint);
-        }
-
     }
 }

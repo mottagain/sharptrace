@@ -35,7 +35,7 @@ namespace SharpTrace
             var targetColor = this.Color;
             if (this.Pattern != null) 
             {
-                targetColor = this.Pattern.StripeAtObject(obj, point);
+                targetColor = this.Pattern.PatternAtShape(obj, point);
             }
 
             var effectiveColor = Color.HardamardProduct(targetColor, light.Intensity);

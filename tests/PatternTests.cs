@@ -1,8 +1,74 @@
 namespace tests;
 using SharpTrace;
+using System.Diagnostics;
+
+public class TestPattern : Pattern 
+{
+    public override Color PatternAt(Tuple point)
+    {
+        Debug.Assert(point.IsPoint);
+
+        return new Color(point.x, point.y, point.z);
+    }
+}
 
 public class PatternTests
 {
+    [Fact]
+    public void DefaultPatternTransformation()
+    {
+        var p = new TestPattern();
+
+        Assert.True(p.Transform == Matrix.Identity(4));
+    }
+
+    [Fact]
+    public void AssignPatternTransformation()
+    {
+        var p = new TestPattern();
+        p.Transform = Matrix.Translation(1, 2, 3);
+
+        Assert.True(p.Transform == Matrix.Translation(1, 2, 3));
+    }
+
+    [Fact]
+    public void PatternWithObjectTransformation() 
+    {
+        var shape = new Sphere();
+        shape.Transform = Matrix.Scaling(2, 2, 2);
+        var pattern = new TestPattern();
+
+        var c = pattern.PatternAtShape(shape, Tuple.NewPoint(2, 3, 4));
+
+        Assert.True(c == new Color(1, 1.5f, 2));
+    }
+
+    [Fact]
+    public void PatternWithPatternTransformation()
+    {
+        var shape = new Sphere();
+        var pattern = new TestPattern();
+        pattern.Transform = Matrix.Scaling(2, 2, 2);
+
+        var c = pattern.PatternAtShape(shape, Tuple.NewPoint(2, 3, 4));
+
+        Assert.True(c == new Color(1, 1.5f, 2));
+    }
+
+    [Fact]
+    public void PatternWithBothObjectAndPatternTransformation()
+    {
+        var shape = new Sphere();
+        shape.Transform = Matrix.Scaling(2, 2, 2);
+        var pattern = new TestPattern();
+        pattern.Transform = Matrix.Translation(0.5f, 1, 1.5f);
+
+        var c = pattern.PatternAtShape(shape, Tuple.NewPoint(2.5f, 3, 3.5f));
+
+        Assert.True(c == new Color(0.75f, 0.5f, 0.25f));
+    }
+
+
     [Fact]
     public void CreatingAStripePattern()
     {
@@ -17,9 +83,9 @@ public class PatternTests
     {
         var p = new StripePattern(Color.White, Color.Black);
 
-        Assert.True(p.StripeAt(Tuple.NewPoint(0, 0, 0)) == Color.White);
-        Assert.True(p.StripeAt(Tuple.NewPoint(0, 1, 0)) == Color.White);
-        Assert.True(p.StripeAt(Tuple.NewPoint(0, 2, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 0, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 1, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 2, 0)) == Color.White);
     }
 
     [Fact]
@@ -27,9 +93,9 @@ public class PatternTests
     {
         var p = new StripePattern(Color.White, Color.Black);
 
-        Assert.True(p.StripeAt(Tuple.NewPoint(0, 0, 0)) == Color.White);
-        Assert.True(p.StripeAt(Tuple.NewPoint(0, 0, 1)) == Color.White);
-        Assert.True(p.StripeAt(Tuple.NewPoint(0, 0, 2)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 0, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 0, 1)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 0, 2)) == Color.White);
     }
 
     [Fact]
@@ -37,49 +103,11 @@ public class PatternTests
     {
         var p = new StripePattern(Color.White, Color.Black);
 
-        Assert.True(p.StripeAt(Tuple.NewPoint(0, 0, 0)) == Color.White);
-        Assert.True(p.StripeAt(Tuple.NewPoint(0.9f, 0, 0)) == Color.White);
-        Assert.True(p.StripeAt(Tuple.NewPoint(1, 0, 0)) == Color.Black);
-        Assert.True(p.StripeAt(Tuple.NewPoint(-0.1f, 0, 0)) == Color.Black);
-        Assert.True(p.StripeAt(Tuple.NewPoint(-1, 0, 0)) == Color.Black);
-        Assert.True(p.StripeAt(Tuple.NewPoint(-1.1f, 0, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 0, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0.9f, 0, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(1, 0, 0)) == Color.Black);
+        Assert.True(p.PatternAt(Tuple.NewPoint(-0.1f, 0, 0)) == Color.Black);
+        Assert.True(p.PatternAt(Tuple.NewPoint(-1, 0, 0)) == Color.Black);
+        Assert.True(p.PatternAt(Tuple.NewPoint(-1.1f, 0, 0)) == Color.White);
     }
-
-    [Fact]
-    public void StripesWithObjectTransformation() 
-    {
-        var obj = new Sphere();
-        obj.Transform = Matrix.Scaling(2, 2, 2);
-        var pattern = new StripePattern(Color.White, Color.Black);
-
-        var c = pattern.StripeAtObject(obj, Tuple.NewPoint(1.5f, 0, 0));
-
-        Assert.True(c == Color.White);
-    }
-
-    [Fact]
-    public void StripesWithPatternTransformation()
-    {
-        var obj = new Sphere();
-        var pattern = new StripePattern(Color.White, Color.Black);
-        pattern.Transform = Matrix.Scaling(2, 2, 2);
-
-        var c = pattern.StripeAtObject(obj, Tuple.NewPoint(1.5f, 0, 0));
-
-        Assert.True(c == Color.White);
-    }
-
-    [Fact]
-    public void StripesWithBothObjectAndPatternTransformation()
-    {
-        var obj = new Sphere();
-        obj.Transform = Matrix.Scaling(2, 2, 2);
-        var pattern = new StripePattern(Color.White, Color.Black);
-        pattern.Transform = Matrix.Translation(0.5f, 0, 0);
-
-        var c = pattern.StripeAtObject(obj, Tuple.NewPoint(2.5f, 0, 0));
-
-        Assert.True(c == Color.White);
-    }
-
 }
