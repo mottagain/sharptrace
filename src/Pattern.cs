@@ -38,8 +38,7 @@ namespace SharpTrace
         {
             Debug.Assert(point.IsPoint);
 
-            var abs = (int)Math.Abs(Math.Floor(point.x));
-            if (abs % 2 == 0)
+            if ((int)Math.Floor(point.x) % 2 == 0)
             {
                 return A;
             }
@@ -68,5 +67,51 @@ namespace SharpTrace
         }
 
         private Color _distance;
+    }
+
+    public class RingPattern : Pattern
+    {
+        public RingPattern(Color a, Color b)
+        {
+            this.A = a;
+            this.B = b;
+        }
+        
+        public Color A { get; private set; }
+        public Color B { get; private set; }
+
+        public override Color PatternAt(Tuple point)
+        {
+            Debug.Assert(point.IsPoint);
+
+            if ((int)Math.Floor(Math.Sqrt(point.x * point.x + point.z * point.z)) % 2 == 0)
+            {
+                return this.A;
+            }
+            return this.B;
+        }
+    }
+
+    public class CheckerPattern : Pattern
+    {
+        public CheckerPattern(Color a, Color b)
+        {
+            this.A = a;
+            this.B = b;
+        }
+        
+        public Color A { get; private set; }
+        public Color B { get; private set; }
+
+        public override Color PatternAt(Tuple point)
+        {
+            Debug.Assert(point.IsPoint);
+
+            if ((Math.Floor(point.x) + Math.Floor(point.y) + Math.Floor(point.z)) % 2 == 0)
+            {
+                return this.A;
+            }
+            return this.B;
+        }
     }
 }
