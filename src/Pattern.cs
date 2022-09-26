@@ -46,4 +46,27 @@ namespace SharpTrace
             return B;
         }
     }
+
+    public class GradientPattern : Pattern 
+    {
+        public GradientPattern(Color a, Color b)
+        {
+            this.A = a;
+            this.B = b;
+            this._distance = b - a;
+        }
+
+        public Color A { get; private set; }
+        public Color B { get; private set; }
+
+        public override Color PatternAt(Tuple point)
+        {
+            Debug.Assert(point.IsPoint);
+
+            var result = this.A + _distance * (point.x - (float)Math.Floor(point.x));
+            return result;
+        }
+
+        private Color _distance;
+    }
 }

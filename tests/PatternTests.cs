@@ -68,7 +68,6 @@ public class PatternTests
         Assert.True(c == new Color(0.75f, 0.5f, 0.25f));
     }
 
-
     [Fact]
     public void CreatingAStripePattern()
     {
@@ -109,5 +108,16 @@ public class PatternTests
         Assert.True(p.PatternAt(Tuple.NewPoint(-0.1f, 0, 0)) == Color.Black);
         Assert.True(p.PatternAt(Tuple.NewPoint(-1, 0, 0)) == Color.Black);
         Assert.True(p.PatternAt(Tuple.NewPoint(-1.1f, 0, 0)) == Color.White);
+    }
+
+    [Fact]
+    public void GradientLinearlyInterpolatesBetweenColors()
+    {
+        var p = new GradientPattern(Color.White, Color.Black);
+
+        Assert.True(p.PatternAt(Tuple.NewPoint(0, 0, 0)) == Color.White);
+        Assert.True(p.PatternAt(Tuple.NewPoint(0.25f, 0, 0)) == new Color(0.75f, 0.75f, 0.75f));
+        Assert.True(p.PatternAt(Tuple.NewPoint(0.5f, 0, 0)) == new Color(0.5f, 0.5f, 0.5f));
+        Assert.True(p.PatternAt(Tuple.NewPoint(0.75f, 0, 0)) == new Color(0.25f, 0.25f, 0.25f));
     }
 }
