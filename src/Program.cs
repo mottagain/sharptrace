@@ -8,15 +8,16 @@ namespace SharpTrace
         {
             // DrawClockHourMarkers();
             // Trajectory();
-            RayCastToSphere();
-            //RenderFirstScene();
+            //RayCastToSphere();
+            RenderFirstScene();
         }
 
         private static void RenderFirstScene()
         {
             var floor = new Plane();
-            floor.Material.Color = new Color(1f, 0.9f, 0.9f);
             floor.Material.Specular = 0f;
+            floor.Material.Pattern = new CheckerPattern(Color.White, Color.Black);
+            floor.Material.Pattern.Transform = Matrix.RotationY(MathExt.PiOver4);
 
             var wall = new Plane();
             wall.Transform =

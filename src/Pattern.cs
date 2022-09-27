@@ -107,7 +107,9 @@ namespace SharpTrace
         {
             Debug.Assert(point.IsPoint);
 
-            if ((Math.Floor(point.x) + Math.Floor(point.y) + Math.Floor(point.z)) % 2 == 0)
+            if (((int)Math.Floor(Math.Round(point.x, 5)) + 
+                 (int)Math.Floor(Math.Round(point.y, 5)) + 
+                 (int)Math.Floor(Math.Round(point.z, 5))) % 2 == 0)
             {
                 return this.A;
             }
