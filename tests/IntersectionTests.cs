@@ -58,4 +58,16 @@ public class IntersectionTests
 
         Assert.True(comps.OverPoint.z < -MathExt.Epsilon / 2f);
     }
+
+    [Fact]
+    public void PrecomputeReflectionVector()
+    {
+        var shape = new Plane();
+        var r = new Ray(Tuple.NewPoint(0, 1, -1), Tuple.NewVector(0, -MathExt.Sqrt2Over2, MathExt.Sqrt2Over2));
+        var i = new Intersection((float)Math.Sqrt(2), shape);
+
+        var comps = i.PrepareComputations(r);
+
+        Assert.True(comps.ReflectVector == Tuple.NewVector(0, MathExt.Sqrt2Over2, MathExt.Sqrt2Over2));
+    }
 }

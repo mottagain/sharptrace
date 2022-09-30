@@ -125,4 +125,12 @@ public class MaterialTests
         Assert.True(c2 == Color.Black);
     }
 
+    [Fact]
+    public void ReflectivityForDefaultMaterial() 
+    {
+        var m = new Material();
+
+        Assert.True(m.Reflectivity == 0f);
+    }
+
 }

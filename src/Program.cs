@@ -17,20 +17,22 @@ namespace SharpTrace
             var floor = new Plane();
             floor.Material.Specular = 0f;
             floor.Material.Pattern = new CheckerPattern(Color.White, Color.Black);
+            floor.Material.Reflectivity = 0.25f;
             floor.Material.Pattern.Transform = Matrix.RotationY(MathExt.PiOver4);
 
             var wall = new Plane();
             wall.Transform =
                 Matrix.Translation(0, 0, 10) *
                 Matrix.RotationX(MathExt.PiOver2);
-            wall.Material.Color = new Color(1f, 0.9f, 0.9f);
+            wall.Material.Color = new Color(0.8f, 0.8f, 1.0f);
             wall.Material.Specular = 0f;
 
             var middle = new Sphere();
             middle.Transform = Matrix.Translation(-0.5f, 1f, 0.5f);
-            middle.Material.Color = new Color(0.1f, 1f, 0.5f);
+            middle.Material.Color = new Color(0.3f, 0.3f, 0.3f);
             middle.Material.Diffuse = 0.7f;
             middle.Material.Specular = 0.3f;
+            middle.Material.Reflectivity = 0.8f;
 
             var right = new Sphere();
             right.Transform =
@@ -55,7 +57,7 @@ namespace SharpTrace
             var camera = new Camera(1000, 1000, MathExt.PiOver3);
             camera.Transform = Matrix.ViewTransform(Tuple.NewPoint(0f, 1.5f, -5f), Tuple.NewPoint(0, 1, 0), Tuple.NewVector(0, 1, 0));
 
-            var canvas = camera.Render(w);
+            var canvas = camera.Render(w, 5);
             
             canvas.SaveAsJpeg("Scene1.jpg");
         }

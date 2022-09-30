@@ -52,7 +52,7 @@ namespace SharpTrace
             return new Ray(origin, direction);
         }
 
-        public Canvas Render(World w)
+        public Canvas Render(World w, int maxReflections)
         {
             var image = new Canvas(this.Width, this.Height);
 
@@ -60,7 +60,7 @@ namespace SharpTrace
             {
                 Parallel.For(0, this.Width - 1, (int x, ParallelLoopState loopState) => {
                     var r = this.RayForPixel(x, y);
-                    var color = w.ColorAt(r);
+                    var color = w.ColorAt(r, maxReflections);
                     image[x, y] = color;
                 });
             }

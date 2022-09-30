@@ -45,7 +45,7 @@ public class WorldTests
         var i = new Intersection(4, shape);
 
         var comps = i.PrepareComputations(r);
-        var c = w.ShadeHit(comps);
+        var c = w.ShadeHit(comps, 5);
 
         Assert.True(c == new Color(0.38066f, 0.47583f, 0.2855f));
     }
@@ -60,7 +60,7 @@ public class WorldTests
         var i = new Intersection(0.5f, shape);
 
         var comps = i.PrepareComputations(r);
-        var c = w.ShadeHit(comps);
+        var c = w.ShadeHit(comps, 5);
 
         Assert.True(c == new Color(0.90498f, 0.90498f, 0.90498f));
     }
@@ -71,7 +71,7 @@ public class WorldTests
         var w = CreateDefaultTestWorld();
         var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
 
-        var c = w.ColorAt(r);
+        var c = w.ColorAt(r, 5);
 
         Assert.True(c == new Color(0.38066f, 0.47583f, 0.2855f));
     }
@@ -86,7 +86,7 @@ public class WorldTests
         inner.Material.Ambient = 1f;
         var r = new Ray(Tuple.NewPoint(0, 0, 0.75f), Tuple.NewVector(0, 0, -1));
 
-        var c = w.ColorAt(r);
+        var c = w.ColorAt(r, 5);
 
         Assert.True(c == inner.Material.Color);
     }
@@ -154,7 +154,7 @@ public class WorldTests
         var up = Tuple.NewVector(0, 1, 0);
         c.Transform = Matrix.ViewTransform(from, to, up);
 
-        var image = c.Render(w);
+        var image = c.Render(w, 5);
 
         Assert.True(image[5, 5] == new Color(0.38066f, 0.47583f, 0.2855f));
     }
@@ -212,9 +212,95 @@ public class WorldTests
         var i = new Intersection(4, s2);
 
         var comps = i.PrepareComputations(r);
-        var color = w.ShadeHit(comps);
+        var color = w.ShadeHit(comps, 5);
 
         Assert.True(color == new Color(0.1f, 0.1f, 0.1f));
+    }
+
+    [Fact]
+    public void ReflectedColorForNonreflectiveSurface()
+    {
+        var w = CreateDefaultTestWorld();
+        var r = new Ray(Tuple.NewPoint(0, 0, 0), Tuple.NewVector(0, 0, 1));
+        var shape = w.Objects.Last();
+        shape.Material.Ambient = 1;
+        var i = new Intersection(1, shape);
+
+        var comps = i.PrepareComputations(r);
+        var color = w.ReflectedColor(comps, 5);
+
+        Assert.True(color == Color.Black);
+    }
+
+    [Fact]
+    public void ReflectedColorForReflectiveMaterial()
+    {
+        var w = CreateDefaultTestWorld();
+        var shape = new Plane();
+        shape.Material.Reflectivity = 0.5f;
+        shape.Transform = Matrix.Translation(0, -1, 0);
+        w.Objects.Add(shape);
+        var r = new Ray(Tuple.NewPoint(0, 0, -3), Tuple.NewVector(0, -MathExt.Sqrt2Over2, MathExt.Sqrt2Over2));
+        var i = new Intersection((float)Math.Sqrt(2), shape);
+
+        var comps = i.PrepareComputations(r);
+        var color = w.ReflectedColor(comps, 5);
+
+        Assert.True(color == new Color(0.19119f, 0.23899f, 0.14339f));
+    }
+
+    [Fact]
+    public void ShadeHitWithReflectiveMaterial()
+    {
+        var w = CreateDefaultTestWorld();
+        var shape = new Plane();
+        shape.Material.Reflectivity = 0.5f;
+        shape.Transform = Matrix.Translation(0, -1, 0);
+        w.Objects.Add(shape);
+        var r = new Ray(Tuple.NewPoint(0, 0, -3), Tuple.NewVector(0, -MathExt.Sqrt2Over2, MathExt.Sqrt2Over2));
+        var i = new Intersection((float)Math.Sqrt(2), shape);
+
+        var comps = i.PrepareComputations(r);
+        var color = w.ShadeHit(comps, 5);
+
+        Assert.True(color == new Color(0.87762f, 0.92542f, 0.82982f));
+    }
+
+    [Fact]
+    public void ColorAtWithMutuallyReflectiveSurfaces()
+    {
+        var w = new World();
+        w.Light = new PointLight(Tuple.NewPoint(0, 0, 0), Color.White);
+        var lower = new Plane();
+        lower.Material.Reflectivity = 1f;
+        lower.Transform = Matrix.Translation(0, -1, 0);
+        w.Objects.Add(lower);
+        var upper = new Plane();
+        upper.Material.Reflectivity = 1f;
+        upper.Transform = Matrix.Translation(0, 1, 0);
+        w.Objects.Add(upper);
+        var r = new Ray(Tuple.NewPoint(0, 0, 0), Tuple.NewVector(0, 1, 0));
+
+        var color = w.ColorAt(r, 5);
+
+        Assert.True(true, "Recursive reflection terminates successfully.");
+    }
+
+    [Fact]
+    public void ReflectedColorAtMaximumRecursiveDepth()
+    {
+        var w = CreateDefaultTestWorld();
+        var shape = new Plane();
+        shape.Material.Reflectivity = 0.5f;
+        shape.Transform = Matrix.Translation(0, -1, 0);
+        w.Objects.Add(shape);
+        var r = new Ray(Tuple.NewPoint(0, 0, -3), Tuple.NewVector(0, -MathExt.Sqrt2Over2, MathExt.Sqrt2Over2));
+        var i = new Intersection((float)Math.Sqrt(2), shape);
+
+        var comps = i.PrepareComputations(r);
+        var color = w.ReflectedColor(comps, 0);
+
+        Assert.True(color == Color.Black);
     }
 
 

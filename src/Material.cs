@@ -12,6 +12,7 @@ namespace SharpTrace
             Diffuse = 0.9f;
             Specular = 0.9f;
             Shininess = 200f;
+            Reflectivity = 0f;
         }
 
         public Color Color { get; set; }
@@ -25,6 +26,8 @@ namespace SharpTrace
         public float Specular { get; set; }
 
         public float Shininess { get; set; }
+
+        public float Reflectivity { get; set; }
 
         public Color Lighting(Shape obj, PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
         {

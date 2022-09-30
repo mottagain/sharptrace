@@ -36,6 +36,7 @@ namespace SharpTrace
                 result.Inside = false;
             }
 
+            result.ReflectVector = r.Direction.Reflect(result.NormalVector);
             result.OverPoint = result.Point + result.NormalVector * 0.005f;
 
             return result;
@@ -128,12 +129,28 @@ namespace SharpTrace
             }
         }
 
+        public Tuple ReflectVector
+        {
+            get
+            {
+                return _reflectVector;
+            }
+
+            set
+            {
+                Debug.Assert(value.IsVector);
+                _reflectVector = value;
+            }
+
+        }
+
         public bool Inside { get; set; }
 
         private Tuple _point;
         private Tuple _overPoint;
         private Tuple _eyeVector;
         private Tuple _normalVector;
+        private Tuple _reflectVector;
     }
 
 }
