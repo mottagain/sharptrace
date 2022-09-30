@@ -5,10 +5,10 @@ namespace SharpTrace
 
     public abstract class Shape
     {
-        public Shape() 
+        public Shape(Material? material = null) 
         {
             Transform = Matrix.Identity(4);
-            Material = new Material();
+            Material = material ?? new Material();
         }
 
         public Intersections Intersects(Ray r)

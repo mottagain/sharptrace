@@ -6,7 +6,7 @@ namespace SharpTrace
 
     public class Plane : Shape
     {
-        public Plane() : base ()
+        public Plane(Material? material = null) : base(material)
         {
         }
 

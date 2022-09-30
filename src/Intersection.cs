@@ -16,7 +16,7 @@ namespace SharpTrace
 
         public Shape Object { get; private set; }
 
-        public Computations PrepareComputations(Ray r)
+        public Computations PrepareComputations(Ray r, Intersections? xs = null)
         {
             var result = new Computations();
 
@@ -38,6 +38,31 @@ namespace SharpTrace
 
             result.ReflectVector = r.Direction.Reflect(result.NormalVector);
             result.OverPoint = result.Point + result.NormalVector * 0.005f;
+            result.UnderPoint = result.Point - result.NormalVector * 0.005f;
+
+            if (xs != null)
+            {
+                var containers = new List<Shape>();
+                foreach(var intersection in xs) {
+                    if (intersection == this)
+                    {
+                        result.N1 = containers.Count == 0 ? 1.0f : containers.Last().Material.RefractiveIndex;
+                    }
+
+                    if (containers.Contains(intersection.Object))
+                    {
+                        containers.Remove(intersection.Object);
+                    }
+                    else
+                    {
+                        containers.Add(intersection.Object);
+                    }
+                    if (intersection == this) {
+                        result.N2 = containers.Count == 0 ? 1.0f : containers.Last().Material.RefractiveIndex;
+                        break;
+                    }
+                }
+            }
 
             return result;
         }
@@ -101,6 +126,19 @@ namespace SharpTrace
             }
         }
 
+        public Tuple UnderPoint 
+        {
+            get
+            {
+                return _underPoint;
+            }
+            set
+            {
+                Debug.Assert(value.IsPoint);
+                _underPoint = value;
+            }
+        }
+
         public Tuple EyeVector
         {
             get
@@ -141,13 +179,17 @@ namespace SharpTrace
                 Debug.Assert(value.IsVector);
                 _reflectVector = value;
             }
-
         }
+
+        public float N1 { get; set; }
+
+        public float N2 { get; set; }
 
         public bool Inside { get; set; }
 
         private Tuple _point;
         private Tuple _overPoint;
+        private Tuple _underPoint;
         private Tuple _eyeVector;
         private Tuple _normalVector;
         private Tuple _reflectVector;

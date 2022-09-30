@@ -304,6 +304,72 @@ public class WorldTests
     }
 
 
+    [Fact]
+    public void RefractedColorWithAnOpaqueSurface()
+    {
+        var w = CreateDefaultTestWorld();
+        var shape = w.Objects.First();
+        var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
+        var xs = new Intersections { new Intersection(4, shape), new Intersection(6, shape) };
+
+        var comps = xs[0].PrepareComputations(r, xs);
+        var c = w.RefractedColor(comps, 5);
+
+        Assert.True(c == Color.Black);
+    }
+
+    [Fact]
+    public void RefractedColorAtMaximumRecursiveDepth()
+    {
+        var w = CreateDefaultTestWorld();
+        var shape = w.Objects.First();
+        shape.Material.Transparency = 1f;
+        shape.Material.RefractiveIndex = 1.5f;
+        var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
+        var xs = new Intersections { new Intersection(4, shape), new Intersection(6, shape) };
+
+        var comps = xs[0].PrepareComputations(r, xs);
+        var c = w.RefractedColor(comps, 0);
+
+        Assert.True(c == Color.Black);
+    }
+
+    [Fact]
+    public void RefractedColorUnderTotalInternalReflection()
+    {
+        var w = CreateDefaultTestWorld();
+        var shape = w.Objects.First();
+        shape.Material.Transparency = 1f;
+        shape.Material.RefractiveIndex = 1.5f;
+        var r = new Ray(Tuple.NewPoint(0, 0, MathExt.Sqrt2Over2), Tuple.NewVector(0, 1, 0));
+        var xs = new Intersections { new Intersection(-MathExt.Sqrt2Over2, shape), new Intersection(MathExt.Sqrt2Over2, shape) };
+
+        var comps = xs[1].PrepareComputations(r, xs);
+        var c = w.RefractedColor(comps, 5);
+
+        Assert.True(c == Color.Black);
+    }
+
+    [Fact]
+    public void RefractedColorWithRefractedRay()
+    {
+        var w = CreateDefaultTestWorld();
+        var a = w.Objects.First();
+        a.Material.Ambient = 1f;
+        a.Material.Pattern = new TestPattern();
+        var b = w.Objects.Last();
+        b.Material.Transparency = 1f;
+        b.Material.RefractiveIndex = 1.5f;
+
+        var r = new Ray(Tuple.NewPoint(0, 0, 0.1f), Tuple.NewVector(0, 1, 0));
+        var xs = new Intersections { new Intersection(-0.9899f, a), new Intersection(-0.4899f, b), new Intersection(0.4899f, b), new Intersection(0.9899f, a) };
+
+        var comps = xs[2].PrepareComputations(r, xs);
+        var c = w.RefractedColor(comps, 5);
+
+        Assert.True(c == new Color(0, 0.99881f, 0.04873f));
+    }
+
     private static World CreateDefaultTestWorld()
     {
         var result = new World();

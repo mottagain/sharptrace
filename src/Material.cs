@@ -5,6 +5,15 @@ namespace SharpTrace
 
     public class Material
     {
+        public static Material Glass {
+            get 
+            {
+                var result = new Material();
+                result.Transparency = 1f;
+                result.RefractiveIndex = 1.5f;
+                return result;
+            }
+        }
         public Material()
         {
             Color = Color.White;
@@ -13,6 +22,8 @@ namespace SharpTrace
             Specular = 0.9f;
             Shininess = 200f;
             Reflectivity = 0f;
+            Transparency = 0f;
+            RefractiveIndex = 1f;
         }
 
         public Color Color { get; set; }
@@ -28,6 +39,10 @@ namespace SharpTrace
         public float Shininess { get; set; }
 
         public float Reflectivity { get; set; }
+
+        public float Transparency { get; set; }
+
+        public float RefractiveIndex { get; set; }
 
         public Color Lighting(Shape obj, PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
         {

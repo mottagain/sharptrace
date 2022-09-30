@@ -90,6 +90,29 @@ namespace SharpTrace
             return color * comps.Object!.Material.Reflectivity;
         }
 
+        public Color RefractedColor(Computations comps, int remainingRefractions)
+        {
+            if (remainingRefractions <= 0 || MathExt.Near(comps.Object!.Material.Transparency, 0))
+            {
+                return Color.Black;
+            }
+
+            // Check for total internal reflection
+            var nRatio = comps.N1 / comps.N2;
+            var cosThetaI = Tuple.Dot(comps.EyeVector, comps.NormalVector);
+            var sinThetaTSquared = nRatio * nRatio * (1 - cosThetaI * cosThetaI);
+            if (sinThetaTSquared > 1f)
+            {
+                return Color.Black;
+            }
+
+            var cosThetaT = (float)Math.Sqrt(1f - sinThetaTSquared);
+            var direction = comps.NormalVector * (nRatio * cosThetaI - cosThetaT) - comps.EyeVector * nRatio;
+            var refractRay = new Ray(comps.UnderPoint, direction);
+
+            return this.ColorAt(refractRay, remainingRefractions - 1) * comps.Object.Material.Transparency;
+        }
+
         public PointLight? Light { get; set; }
 
         private List<Shape> _objects = new List<Shape>();

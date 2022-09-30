@@ -4,6 +4,10 @@ using SharpTrace;
 
 class TestShape : Shape 
 {
+    public TestShape(Material? material = null) : base(material)
+    {
+    }
+
     public override Intersections LocalIntersects(Ray r) 
     {
         this.LocalRay = r;
@@ -112,4 +116,15 @@ public class ShapeTests
 
         Assert.True(n == Tuple.NewVector(0f, 0.97014f, -0.24254f), "Normal vector on transformed shape is correct.");
     }
+
+    [Fact]
+    public void ProduceShapeWithMaterial()
+    {
+        var m = Material.Glass;
+
+        var s = new TestShape(m);
+
+        Assert.True(s.Material == m);
+    }
+
 }

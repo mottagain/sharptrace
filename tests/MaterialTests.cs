@@ -133,4 +133,13 @@ public class MaterialTests
         Assert.True(m.Reflectivity == 0f);
     }
 
+    [Fact]
+    public void TransparencyAndRefractiveIndexDefaults() 
+    {
+        var m = new Material();
+
+        Assert.True(MathExt.Near(m.Transparency, 0f));
+        Assert.True(MathExt.Near(m.RefractiveIndex, 1f));
+    }
+
 }

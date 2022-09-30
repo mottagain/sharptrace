@@ -5,7 +5,7 @@ namespace SharpTrace
     
     public class Sphere : Shape
     {
-        public Sphere() : base()
+        public Sphere(Material? material = null) : base(material)
         {
             Origin = Tuple.NewPoint(0, 0, 0);
             Radius = 1;
