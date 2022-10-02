@@ -120,4 +120,43 @@ public class IntersectionTests
         Assert.True(comps.UnderPoint.z > MathExt.Epsilon / 2f);
         Assert.True(comps.Point.z < comps.UnderPoint.z);
     }
+
+    [Fact]
+    public void SchlickApproximationUnderTotalInternalReflection() 
+    {
+        var shape = new Sphere(Material.Glass);
+        var r = new Ray(Tuple.NewPoint(0, 0, MathExt.Sqrt2Over2), Tuple.NewVector(0, 1, 0));
+        var xs = new Intersections { new Intersection(-MathExt.Sqrt2Over2, shape), new Intersection(MathExt.Sqrt2Over2, shape) };
+
+        var comps = xs[1].PrepareComputations(r, xs);
+        var reflectance = comps.Schlick();
+
+        Assert.True(MathExt.Near(reflectance, 1f));
+    }
+
+    [Fact]
+    public void SchlickApproximationWithPerpendicularViewingAngle()
+    {
+        var shape = new Sphere(Material.Glass);
+        var r = new Ray(Tuple.NewPoint(0, 0, 0), Tuple.NewVector(0, 1, 0));
+        var xs = new Intersections { new Intersection(-1, shape), new Intersection(1, shape) };
+
+        var comps = xs[1].PrepareComputations(r, xs);
+        var reflectance = comps.Schlick();
+
+        Assert.True(MathExt.Near(reflectance, 0.04f));
+    }
+
+    [Fact]
+    public void SchlickApproximationWithSmallAngleAndN2GreaterThanN1()
+    {
+        var shape = new Sphere(Material.Glass);
+        var r = new Ray(Tuple.NewPoint(0, 0.99f, -2), Tuple.NewVector(0, 0, 1));
+        var xs = new Intersections { new Intersection(1.8589f, shape) };
+
+        var comps = xs[0].PrepareComputations(r, xs);
+        var reflectance = comps.Schlick();
+
+        Assert.True(MathExt.Near(reflectance, 0.48873f));
+    }
 }

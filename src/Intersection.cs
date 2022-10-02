@@ -187,6 +187,32 @@ namespace SharpTrace
 
         public bool Inside { get; set; }
 
+        public float Schlick() 
+        {
+            // Find the Cosine of the angle between the eye and normal vectors
+            var cos = Tuple.Dot(this.EyeVector, this.NormalVector);
+
+            // Total internal reflection can only occur if n1 > n2
+            if (this.N1 > this.N2) 
+            {
+                var n = this.N1 / this.N2;
+                var sin2_t = n * n * (1f - cos * cos);
+                if (sin2_t > 1f) 
+                {
+                    return 1f;
+                }
+
+                // Compute the cosine of theta_t using trig identity
+                var cos_t = (float)Math.Sqrt(1f - sin2_t);
+
+                // When n1 > n2, use cos(theta_t) instead
+                cos = cos_t;
+            }
+
+            var r0 = (float)Math.Pow((this.N1 - this.N2) / (this.N1 + this.N2), 2);
+            return r0 + (1f - r0) * (float)Math.Pow(1f - cos, 5);
+        }
+
         private Tuple _point;
         private Tuple _overPoint;
         private Tuple _underPoint;

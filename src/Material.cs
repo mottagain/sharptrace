@@ -9,8 +9,13 @@ namespace SharpTrace
             get 
             {
                 var result = new Material();
-                result.Transparency = 1f;
+                result.Transparency = 0.9f;
+                result.Reflectivity = 0.9f;
                 result.RefractiveIndex = 1.5f;
+                result.Ambient = 0.01f;
+                result.Diffuse = 0.09f;
+                result.Specular = 1f;
+                result.Shininess = 300f;
                 return result;
             }
         }

@@ -32,7 +32,7 @@ namespace SharpTrace
             var hit = xs.Hit();
             if (hit != null)
             {
-                var comps = hit.PrepareComputations(r);
+                var comps = hit.PrepareComputations(r, xs);
 
                 return this.ShadeHit(comps, remainingReflections);
             }
@@ -40,15 +40,23 @@ namespace SharpTrace
             return Color.Black;
         }
 
-        public Color ShadeHit(Computations comps, int remainingReflections)
+        public Color ShadeHit(Computations comps, int remainingRecursion)
         {
             if (Light != null)
             {
                 bool isShadowed = this.IsShadowed(comps.OverPoint);
-                var surface = comps.Object!.Material.Lighting(comps.Object, Light, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
-                var reflected = this.ReflectedColor(comps, remainingReflections);
+                var surface = comps.Object!.Material.Lighting(comps.Object, this.Light, comps.OverPoint, comps.EyeVector, comps.NormalVector, isShadowed);
+                var reflected = this.ReflectedColor(comps, remainingRecursion);
+                var refracted = this.RefractedColor(comps, remainingRecursion);
 
-                return surface + reflected;
+                var material = comps.Object.Material;
+                if (material.Reflectivity > 0f && material.Transparency > 0f) 
+                {
+                    var reflectance = comps.Schlick();
+                    return surface + reflected * reflectance + refracted * (1f - reflectance);
+                }
+
+                return surface + reflected + refracted;
             }
 
             return Color.Black;
@@ -100,7 +108,7 @@ namespace SharpTrace
             // Check for total internal reflection
             var nRatio = comps.N1 / comps.N2;
             var cosThetaI = Tuple.Dot(comps.EyeVector, comps.NormalVector);
-            var sinThetaTSquared = nRatio * nRatio * (1 - cosThetaI * cosThetaI);
+            var sinThetaTSquared = nRatio * nRatio * (1f - cosThetaI * cosThetaI);
             if (sinThetaTSquared > 1f)
             {
                 return Color.Black;

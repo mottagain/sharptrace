@@ -47,7 +47,7 @@ public class WorldTests
         var comps = i.PrepareComputations(r);
         var c = w.ShadeHit(comps, 5);
 
-        Assert.True(c == new Color(0.38066f, 0.47583f, 0.2855f));
+        Assert.True(c == new Color(0.38054f, 0.47568f, 0.28541f));
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class WorldTests
         var comps = i.PrepareComputations(r);
         var c = w.ShadeHit(comps, 5);
 
-        Assert.True(c == new Color(0.90498f, 0.90498f, 0.90498f));
+        Assert.True(c == new Color(0.90335f, 0.90335f, 0.90335f));
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class WorldTests
 
         var c = w.ColorAt(r, 5);
 
-        Assert.True(c == new Color(0.38066f, 0.47583f, 0.2855f));
+        Assert.True(c == new Color(0.38054f, 0.47568f, 0.28541f));
     }
 
     [Fact]
@@ -156,7 +156,7 @@ public class WorldTests
 
         var image = c.Render(w, 5);
 
-        Assert.True(image[5, 5] == new Color(0.38066f, 0.47583f, 0.2855f));
+        Assert.True(image[5, 5] == new Color(0.38054f, 0.47568f, 0.28541f));
     }
 
     [Fact]
@@ -246,7 +246,7 @@ public class WorldTests
         var comps = i.PrepareComputations(r);
         var color = w.ReflectedColor(comps, 5);
 
-        Assert.True(color == new Color(0.19119f, 0.23899f, 0.14339f));
+        Assert.True(color == new Color(0.19113f, 0.23892f, 0.14335f));
     }
 
     [Fact]
@@ -263,7 +263,7 @@ public class WorldTests
         var comps = i.PrepareComputations(r);
         var color = w.ShadeHit(comps, 5);
 
-        Assert.True(color == new Color(0.87762f, 0.92542f, 0.82982f));
+        Assert.True(color == new Color(0.87741f, 0.92519f, 0.82962f));
     }
 
     [Fact]
@@ -367,7 +367,54 @@ public class WorldTests
         var comps = xs[2].PrepareComputations(r, xs);
         var c = w.RefractedColor(comps, 5);
 
-        Assert.True(c == new Color(0, 0.99881f, 0.04873f));
+        Assert.True(c == new Color(0, 0.99381f, 0.04849f));
+    }
+
+    [Fact]
+    public void ShadeHitWithTransparentMaterial()
+    {
+        var w = CreateDefaultTestWorld();
+        var floor = new Plane();
+        floor.Transform = Matrix.Translation(0, -1, 0);
+        floor.Material.Transparency = 0.5f;
+        floor.Material.RefractiveIndex = 1.5f;
+        w.Objects.Add(floor);
+        var ball = new Sphere();
+        ball.Material.Color = new Color(1, 0, 0);
+        ball.Material.Ambient = 0.5f;
+        ball.Transform = Matrix.Translation(0, -3.5f, -0.5f);
+        w.Objects.Add(ball);
+        var r = new Ray(Tuple.NewPoint(0, 0, -3), Tuple.NewVector(0, -MathExt.Sqrt2Over2, MathExt.Sqrt2Over2));
+        var xs = new Intersections { new Intersection((float)Math.Sqrt(2), floor) };
+
+        var comps = xs[0].PrepareComputations(r, xs);
+        var color = w.ShadeHit(comps, 5);
+
+        Assert.True(color == new Color(0.93627f, 0.68627f, 0.68627f));
+    }
+
+    [Fact]
+    public void ShadeHitWithReflectiveTransparentMaterial()
+    {
+        var w = CreateDefaultTestWorld();
+        var floor = new Plane();
+        floor.Transform = Matrix.Translation(0, -1, 0);
+        floor.Material.Reflectivity = 0.5f;
+        floor.Material.Transparency = 0.5f;
+        floor.Material.RefractiveIndex = 1.5f;
+        w.Objects.Add(floor);
+        var ball = new Sphere();
+        ball.Material.Color = new Color(1, 0, 0);
+        ball.Material.Ambient = 0.5f;
+        ball.Transform = Matrix.Translation(0, -3.5f, -0.5f);
+        w.Objects.Add(ball);
+        var r = new Ray(Tuple.NewPoint(0, 0, -3), Tuple.NewVector(0, -MathExt.Sqrt2Over2, MathExt.Sqrt2Over2));
+        var xs = new Intersections { new Intersection((float)Math.Sqrt(2), floor) };
+
+        var comps = xs[0].PrepareComputations(r, xs);
+        var color = w.ShadeHit(comps, 5);
+
+        Assert.True(color == new Color(0.93380f, 0.69632f, 0.69230f));
     }
 
     private static World CreateDefaultTestWorld()

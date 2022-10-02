@@ -9,7 +9,37 @@ namespace SharpTrace
             // DrawClockHourMarkers();
             // Trajectory();
             //RayCastToSphere();
-            RenderFirstScene();
+            //RenderFirstScene();
+            RenderRefraction();
+        }
+
+        private static void RenderRefraction()
+        {
+            var wall = new Plane();
+            wall.Transform =
+                Matrix.Translation(0, 0, 10) *
+                Matrix.RotationX(MathExt.PiOver2);
+            wall.Material.Pattern = new CheckerPattern(Color.White, Color.Black);
+            wall.Material.Specular = 0f;
+
+            var sphere = new Sphere(Material.Glass);
+            sphere.Transform = Matrix.Scaling(2, 2, 2);
+
+            var hole = new Sphere();
+            hole.Material.Reflectivity = 0;
+            hole.Material.RefractiveIndex = 1;
+            hole.Material.Transparency = 1;
+
+            var w = new World();
+            w.Objects.AddRange(new Shape[] { wall, sphere, hole});
+            w.Light = new PointLight(Tuple.NewPoint(0, 10, 0), Color.White);
+
+            var camera = new Camera(1000, 1000, MathExt.PiOver3);
+            camera.Transform = Matrix.ViewTransform(Tuple.NewPoint(0f, 0f, -6f), Tuple.NewPoint(0, 0, 0), Tuple.NewVector(0, 1, 0));
+
+            var canvas = camera.Render(w, 5);
+            
+            canvas.SaveAsJpeg("refraction.jpg");
         }
 
         private static void RenderFirstScene()
