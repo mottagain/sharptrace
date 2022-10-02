@@ -2,13 +2,13 @@
 namespace tests;
 using SharpTrace;
 
-class TestShape : Shape 
+class TestShape : Shape
 {
     public TestShape(Material? material = null) : base(material)
     {
     }
 
-    public override Intersections LocalIntersects(Ray r) 
+    public override Intersections LocalIntersects(Ray r)
     {
         this.LocalRay = r;
         return new Intersections();
@@ -49,7 +49,7 @@ public class ShapeTests
     }
 
     [Fact]
-    public void ShapeHasDefaultMaterial() 
+    public void ShapeHasDefaultMaterial()
     {
         var s = new TestShape();
 
@@ -59,7 +59,7 @@ public class ShapeTests
     }
 
     [Fact]
-    public void ShapeMayBeAssignedMaterial() 
+    public void ShapeMayBeAssignedMaterial()
     {
         var s = new TestShape();
         var m = new Material();

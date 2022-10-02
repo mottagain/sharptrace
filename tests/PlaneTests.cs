@@ -26,7 +26,7 @@ public class PlaneTests
     }
 
     [Fact]
-    public void IntersectWithARayParallelToThePlane() 
+    public void IntersectWithARayParallelToThePlane()
     {
         var p = new Plane();
         var r = new Ray(Tuple.NewPoint(0, 10, 0), Tuple.NewVector(0, 0, 1));
@@ -48,7 +48,7 @@ public class PlaneTests
     }
 
     [Fact]
-    public void IntersectPlanFromAbove() 
+    public void IntersectPlanFromAbove()
     {
         var p = new Plane();
         var r = new Ray(Tuple.NewPoint(0, 1, 0), Tuple.NewVector(0, -1, 0));
@@ -61,7 +61,7 @@ public class PlaneTests
     }
 
     [Fact]
-    public void IntersectPlanFromBelow() 
+    public void IntersectPlanFromBelow()
     {
         var p = new Plane();
         var r = new Ray(Tuple.NewPoint(0, -1, 0), Tuple.NewVector(0, 1, 0));

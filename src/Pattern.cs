@@ -4,7 +4,7 @@ namespace SharpTrace
     using System.Diagnostics;
 
 
-    public abstract class Pattern 
+    public abstract class Pattern
     {
         public Pattern()
         {
@@ -46,7 +46,7 @@ namespace SharpTrace
         }
     }
 
-    public class GradientPattern : Pattern 
+    public class GradientPattern : Pattern
     {
         public GradientPattern(Color a, Color b)
         {
@@ -76,7 +76,7 @@ namespace SharpTrace
             this.A = a;
             this.B = b;
         }
-        
+
         public Color A { get; private set; }
         public Color B { get; private set; }
 
@@ -99,7 +99,7 @@ namespace SharpTrace
             this.A = a;
             this.B = b;
         }
-        
+
         public Color A { get; private set; }
         public Color B { get; private set; }
 
@@ -107,8 +107,8 @@ namespace SharpTrace
         {
             Debug.Assert(point.IsPoint);
 
-            if (((int)Math.Floor(Math.Round(point.x, 5)) + 
-                 (int)Math.Floor(Math.Round(point.y, 5)) + 
+            if (((int)Math.Floor(Math.Round(point.x, 5)) +
+                 (int)Math.Floor(Math.Round(point.y, 5)) +
                  (int)Math.Floor(Math.Round(point.z, 5))) % 2 == 0)
             {
                 return this.A;

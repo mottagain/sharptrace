@@ -53,7 +53,7 @@ public class IntersectionTests
         var s = new Sphere();
         s.Transform = Matrix.Translation(0, 0, 1);
         var i = new Intersection(5, s);
-        
+
         var comps = i.PrepareComputations(r);
 
         Assert.True(comps.OverPoint.z < -MathExt.Epsilon / 2f);
@@ -107,7 +107,7 @@ public class IntersectionTests
     }
 
     [Fact]
-    public void UnderPointIsOffsetBelowTheSurface() 
+    public void UnderPointIsOffsetBelowTheSurface()
     {
         var r = new Ray(Tuple.NewPoint(0, 0, -5), Tuple.NewVector(0, 0, 1));
         var shape = new Sphere(Material.Glass);
@@ -122,7 +122,7 @@ public class IntersectionTests
     }
 
     [Fact]
-    public void SchlickApproximationUnderTotalInternalReflection() 
+    public void SchlickApproximationUnderTotalInternalReflection()
     {
         var shape = new Sphere(Material.Glass);
         var r = new Ray(Tuple.NewPoint(0, 0, MathExt.Sqrt2Over2), Tuple.NewVector(0, 1, 0));

@@ -5,7 +5,7 @@ namespace SharpTrace
 
     public abstract class Shape
     {
-        public Shape(Material? material = null) 
+        public Shape(Material? material = null)
         {
             Transform = Matrix.Identity(4);
             Material = material ?? new Material();

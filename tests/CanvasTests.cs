@@ -7,7 +7,7 @@ using SharpTrace;
 public class CanvasTests
 {
     [Fact]
-    public void CanvasConstructor() 
+    public void CanvasConstructor()
     {
         var canvas = new Canvas(10, 20);
 
@@ -15,7 +15,7 @@ public class CanvasTests
     }
 
     [Fact]
-    public void WritePixelToCanvas() 
+    public void WritePixelToCanvas()
     {
         var canvas = new Canvas(10, 20);
         var red = new Color(1, 0, 0);

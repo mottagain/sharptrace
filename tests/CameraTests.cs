@@ -6,7 +6,7 @@ using SharpTrace;
 public class CameraTests
 {
     [Fact]
-    public void CameraConstructor() 
+    public void CameraConstructor()
     {
         var width = 160;
         var height = 120;
@@ -21,7 +21,7 @@ public class CameraTests
     }
 
     [Fact]
-    public void PixelSizeForHorizontalCanvas() 
+    public void PixelSizeForHorizontalCanvas()
     {
         var c = new Camera(200, 125, MathExt.PiOver2);
 
@@ -29,7 +29,7 @@ public class CameraTests
     }
 
     [Fact]
-    public void PixelSizeForVerticalCanvas() 
+    public void PixelSizeForVerticalCanvas()
     {
         var c = new Camera(125, 200, MathExt.PiOver2);
 
@@ -37,10 +37,10 @@ public class CameraTests
     }
 
     [Fact]
-    public void RayThroughCenterOfCanvas() 
+    public void RayThroughCenterOfCanvas()
     {
         var c = new Camera(201, 101, MathExt.PiOver2);
-        
+
         var r = c.RayForPixel(100, 50);
 
         Assert.True(r.Origin == Tuple.NewPoint(0, 0, 0));
@@ -48,10 +48,10 @@ public class CameraTests
     }
 
     [Fact]
-    public void RayThroughCornerOfCanvas() 
+    public void RayThroughCornerOfCanvas()
     {
         var c = new Camera(201, 101, MathExt.PiOver2);
-        
+
         var r = c.RayForPixel(0, 0);
 
         Assert.True(r.Origin == Tuple.NewPoint(0, 0, 0));
@@ -59,11 +59,11 @@ public class CameraTests
     }
 
     [Fact]
-    public void RayWhenCameraIsTransformed() 
+    public void RayWhenCameraIsTransformed()
     {
         var c = new Camera(201, 101, MathExt.PiOver2);
         c.Transform = Matrix.RotationY(MathExt.PiOver4) * Matrix.Translation(0, -2, 5);
-        
+
         var r = c.RayForPixel(100, 50);
 
         Assert.True(r.Origin == Tuple.NewPoint(0, 2, -5));

@@ -88,22 +88,22 @@ public class TupleTests
     }
 
     [Fact]
-    public void SubtractionOfPointAndVector() 
+    public void SubtractionOfPointAndVector()
     {
         var p = Tuple.NewPoint(3, 2, 1);
         var v = Tuple.NewVector(5, 6, 7);
-        
+
         Assert.True(p - v == Tuple.NewPoint(-2, -4, -6), "Subtraction of a vector from a point yields correct point.");
     }
 
     [Fact]
-    public void SubtractionOfVectorAndPoint() 
+    public void SubtractionOfVectorAndPoint()
     {
         var v = Tuple.NewVector(5, 6, 7);
         var p = Tuple.NewPoint(3, 2, 1);
 
         var result = v - p;
-        
+
         Assert.False(result.IsPoint, "Subtraction of a point from a vector isn't a point.");
         Assert.False(result.IsVector, "Subtraction of a point from a vector isn't a vector.");
     }
@@ -121,10 +121,10 @@ public class TupleTests
     }
 
     [Fact]
-    public void NegatingATuple() 
+    public void NegatingATuple()
     {
         var a = new Tuple { x = 1, y = -2, z = 3, w = -4 };
-        
+
         Assert.True(-a == new Tuple { x = -1, y = 2, z = -3, w = 4 }, "Negation of a tuple yields the correct tuple.");
     }
 
@@ -135,7 +135,7 @@ public class TupleTests
 
         var result = a * 3.5f;
 
-        Assert.True(result == new Tuple { x = 3.5f, y = -7f, z = 10.5f, w = -14f}, "Multiplication of a tuple and a scalar yields correct tuple.");
+        Assert.True(result == new Tuple { x = 3.5f, y = -7f, z = 10.5f, w = -14f }, "Multiplication of a tuple and a scalar yields correct tuple.");
     }
 
     [Fact]
@@ -145,7 +145,7 @@ public class TupleTests
 
         var result = a / 2f;
 
-        Assert.True(result == new Tuple { x = 0.5f, y = -1f, z = 1.5f, w = -2f}, "Multiplication of a tuple and a scalar yields correct tuple.");
+        Assert.True(result == new Tuple { x = 0.5f, y = -1f, z = 1.5f, w = -2f }, "Multiplication of a tuple and a scalar yields correct tuple.");
     }
 
     [Fact]
@@ -224,7 +224,7 @@ public class TupleTests
     }
 
     [Fact]
-    public void ReflectVectorApproaching45() 
+    public void ReflectVectorApproaching45()
     {
         var v = Tuple.NewVector(1, -1, 0);
         var n = Tuple.NewVector(0, 1, 0);
@@ -235,7 +235,7 @@ public class TupleTests
     }
 
     [Fact]
-    public void ReflectVectorOffSlantedSurface() 
+    public void ReflectVectorOffSlantedSurface()
     {
         var v = Tuple.NewVector(0, -1, 0);
         var n = Tuple.NewVector(MathExt.Sqrt2Over2, MathExt.Sqrt2Over2, 0);

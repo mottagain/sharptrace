@@ -19,15 +19,17 @@ namespace SharpTrace
         public static readonly Color Black = new Color(0, 0, 0);
         public static readonly Color White = new Color(1, 1, 1);
 
-        public static bool operator == (Color lhs, Color rhs) {
-            return 
+        public static bool operator ==(Color lhs, Color rhs)
+        {
+            return
                 MathExt.Near(lhs.r, rhs.r) &&
                 MathExt.Near(lhs.g, rhs.g) &&
                 MathExt.Near(lhs.b, rhs.b);
         }
 
-        public static bool operator != (Color lhs, Color rhs) {
-            return 
+        public static bool operator !=(Color lhs, Color rhs)
+        {
+            return
                 !MathExt.Near(lhs.r, rhs.r) ||
                 !MathExt.Near(lhs.g, rhs.g) ||
                 !MathExt.Near(lhs.b, rhs.b);
@@ -43,7 +45,7 @@ namespace SharpTrace
             };
         }
 
-        public static Color operator -(Color lhs, Color rhs) 
+        public static Color operator -(Color lhs, Color rhs)
         {
             return new Color
             {
@@ -53,7 +55,7 @@ namespace SharpTrace
             };
         }
 
-        public static Color HardamardProduct(Color lhs, Color rhs) 
+        public static Color HardamardProduct(Color lhs, Color rhs)
         {
             return new Color
             {
@@ -73,7 +75,8 @@ namespace SharpTrace
             };
         }
 
-        public bool Equals(Color other) {
+        public bool Equals(Color other)
+        {
             return this == other;
         }
 
@@ -83,10 +86,10 @@ namespace SharpTrace
             {
                 return false;
             }
-            
+
             return this == (Color)obj;
         }
-        
+
         public override int GetHashCode()
         {
             var xIntSpan = MemoryMarshal.Cast<float, int>(new float[] { r, g, b });

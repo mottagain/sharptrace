@@ -5,25 +5,25 @@ namespace SharpTrace
 
     public class PointLight
     {
-        public PointLight(Tuple position, Color intensity) 
+        public PointLight(Tuple position, Color intensity)
         {
             Debug.Assert(position.IsPoint);
-            
+
             _position = position;
             _intensity = intensity;
         }
 
         public Tuple Position
         {
-            get 
+            get
             {
-                return _position;                
+                return _position;
             }
         }
 
         public Color Intensity
         {
-            get 
+            get
             {
                 return _intensity;
             }

@@ -16,7 +16,7 @@ namespace SharpTrace
         {
             var result = new Intersections();
 
-            foreach (var obj in _objects) 
+            foreach (var obj in _objects)
             {
                 var localIntersections = obj.Intersects(r);
                 result.AddRange(localIntersections);
@@ -50,7 +50,7 @@ namespace SharpTrace
                 var refracted = this.RefractedColor(comps, remainingRecursion);
 
                 var material = comps.Object.Material;
-                if (material.Reflectivity > 0f && material.Transparency > 0f) 
+                if (material.Reflectivity > 0f && material.Transparency > 0f)
                 {
                     var reflectance = comps.Schlick();
                     return surface + reflected * reflectance + refracted * (1f - reflectance);
@@ -62,7 +62,7 @@ namespace SharpTrace
             return Color.Black;
         }
 
-        public bool IsShadowed(Tuple point) 
+        public bool IsShadowed(Tuple point)
         {
             Debug.Assert(point.IsPoint);
 
@@ -78,7 +78,7 @@ namespace SharpTrace
                 var hit = xs.Hit();
                 if (hit != null && hit.Time < distance)
                 {
-                    return true;                    
+                    return true;
                 }
             }
 
@@ -87,7 +87,7 @@ namespace SharpTrace
 
         public Color ReflectedColor(Computations comps, int remainingReflections)
         {
-            if (remainingReflections <= 0 || MathExt.Near(comps.Object!.Material.Reflectivity, 0)) 
+            if (remainingReflections <= 0 || MathExt.Near(comps.Object!.Material.Reflectivity, 0))
             {
                 return Color.Black;
             }

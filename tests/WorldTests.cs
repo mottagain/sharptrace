@@ -160,7 +160,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void NoShadow() 
+    public void NoShadow()
     {
         var w = CreateDefaultTestWorld();
         var p = Tuple.NewPoint(0, 10, 0);
@@ -169,7 +169,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void ShadowWhenObjectBetweenPointAndLight() 
+    public void ShadowWhenObjectBetweenPointAndLight()
     {
         var w = CreateDefaultTestWorld();
         var p = Tuple.NewPoint(10, -10, 10);
@@ -178,7 +178,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void NoShadowWhenObjectBehindLight() 
+    public void NoShadowWhenObjectBehindLight()
     {
         var w = CreateDefaultTestWorld();
         var p = Tuple.NewPoint(-20, 20, -20);
@@ -187,7 +187,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void NoShadowWhenObjectBehindPoint() 
+    public void NoShadowWhenObjectBehindPoint()
     {
         var w = CreateDefaultTestWorld();
         var p = Tuple.NewPoint(-2, 2, -2);

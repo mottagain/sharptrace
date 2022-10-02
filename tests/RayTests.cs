@@ -11,7 +11,7 @@ public class RayTests
         var direction = Tuple.NewVector(4, 5, 6);
 
         var r = new Ray(origin, direction);
-        
+
         Assert.True(r.Origin == origin, "Ray returns the origin it was constructed with.");
         Assert.True(r.Direction == direction, "Ray returns the direction it was constructed with.");
     }
@@ -78,7 +78,7 @@ public class RayTests
     }
 
     [Fact]
-    public void TranslateRay() 
+    public void TranslateRay()
     {
         var r = new Ray(Tuple.NewPoint(1, 2, 3), Tuple.NewVector(0, 1, 0));
         var m = Matrix.Translation(3, 4, 5);
@@ -90,7 +90,7 @@ public class RayTests
     }
 
     [Fact]
-    public void ScaleRay() 
+    public void ScaleRay()
     {
         var r = new Ray(Tuple.NewPoint(1, 2, 3), Tuple.NewVector(0, 1, 0));
         var m = Matrix.Scaling(2, 3, 4);

@@ -2,7 +2,7 @@ namespace tests;
 using SharpTrace;
 using System.Diagnostics;
 
-public class TestPattern : Pattern 
+public class TestPattern : Pattern
 {
     public override Color PatternAt(Tuple point)
     {
@@ -32,7 +32,7 @@ public class PatternTests
     }
 
     [Fact]
-    public void PatternWithObjectTransformation() 
+    public void PatternWithObjectTransformation()
     {
         var shape = new Sphere();
         shape.Transform = Matrix.Scaling(2, 2, 2);

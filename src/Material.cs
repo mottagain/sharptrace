@@ -5,8 +5,9 @@ namespace SharpTrace
 
     public class Material
     {
-        public static Material Glass {
-            get 
+        public static Material Glass
+        {
+            get
             {
                 var result = new Material();
                 result.Transparency = 0.9f;
@@ -56,7 +57,7 @@ namespace SharpTrace
             Debug.Assert(normalv.IsVector);
 
             var targetColor = this.Color;
-            if (this.Pattern != null) 
+            if (this.Pattern != null)
             {
                 targetColor = this.Pattern.PatternAtShape(obj, point);
             }
@@ -69,7 +70,7 @@ namespace SharpTrace
             Color diffuse = Color.Black;
             Color specular = Color.Black;
 
-            if (!inShadow) 
+            if (!inShadow)
             {
                 var lightDotNormal = Tuple.Dot(lightv, normalv);
                 if (lightDotNormal < 0)
@@ -84,7 +85,7 @@ namespace SharpTrace
                     var reflectv = (-lightv).Reflect(normalv);
                     var reflectDotEye = Tuple.Dot(reflectv, eyev);
 
-                    if (reflectDotEye <= 0) 
+                    if (reflectDotEye <= 0)
                     {
                         specular = Color.Black;
                     }

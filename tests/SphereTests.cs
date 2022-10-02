@@ -5,7 +5,7 @@ using SharpTrace;
 public class SphereTests
 {
     [Fact]
-    public void SphereDefaultConstructor() 
+    public void SphereDefaultConstructor()
     {
         var s = new Sphere();
 
@@ -14,7 +14,7 @@ public class SphereTests
     }
 
     [Fact]
-    public void SphereIsAShape() 
+    public void SphereIsAShape()
     {
         var s = new Sphere();
         Assert.True(s is Shape);
@@ -42,7 +42,7 @@ public class SphereTests
 
         var xs = s.LocalIntersects(r);
 
-        Assert.True(xs[0].Time == 5.0f, "First intersection is at t = 5.0.");        
+        Assert.True(xs[0].Time == 5.0f, "First intersection is at t = 5.0.");
         Assert.True(xs[1].Time == 5.0f, "Second intersection is at t = 5.0.");
     }
 
@@ -108,36 +108,36 @@ public class SphereTests
     }
 
     [Fact]
-    public void NormalOnSphereAtPointOnXAxis() 
+    public void NormalOnSphereAtPointOnXAxis()
     {
         var s = new Sphere();
-        
+
         var n = s.LocalNormalAt(Tuple.NewPoint(1, 0, 0));
 
         Assert.True(n == Tuple.NewVector(1, 0, 0), "Normal on point on x axis should be a unit vector on the x axis.");
     }
- 
+
     [Fact]
-    public void NormalOnSphereAtPointOnYAxis() 
+    public void NormalOnSphereAtPointOnYAxis()
     {
         var s = new Sphere();
-        
+
         var n = s.LocalNormalAt(Tuple.NewPoint(0, 1, 0));
 
         Assert.True(n == Tuple.NewVector(0, 1, 0), "Normal on point on y axis should be a unit vector on the y axis.");
     }
 
     [Fact]
-    public void NormalOnSphereAtPointOnZAxis() 
+    public void NormalOnSphereAtPointOnZAxis()
     {
         var s = new Sphere();
-        
+
         var n = s.LocalNormalAt(Tuple.NewPoint(0, 0, 1));
 
-        Assert.True(n == Tuple.NewVector(0, 0, 1), "Normal on point on z axis should be a unit vector on the z axis.");        
+        Assert.True(n == Tuple.NewVector(0, 0, 1), "Normal on point on z axis should be a unit vector on the z axis.");
     }
 
-     [Fact]
+    [Fact]
     public void NormalOnSphereAtNonaxialPoint()
     {
         var s = new Sphere();

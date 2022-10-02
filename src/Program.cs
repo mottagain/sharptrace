@@ -1,10 +1,10 @@
 ﻿
-namespace SharpTrace 
+namespace SharpTrace
 {
 
-    public static class Program 
+    public static class Program
     {
-        public static void Main() 
+        public static void Main()
         {
             // DrawClockHourMarkers();
             // Trajectory();
@@ -31,14 +31,14 @@ namespace SharpTrace
             hole.Material.Transparency = 1;
 
             var w = new World();
-            w.Objects.AddRange(new Shape[] { wall, sphere, hole});
+            w.Objects.AddRange(new Shape[] { wall, sphere, hole });
             w.Light = new PointLight(Tuple.NewPoint(0, 10, 0), Color.White);
 
             var camera = new Camera(1000, 1000, MathExt.PiOver3);
             camera.Transform = Matrix.ViewTransform(Tuple.NewPoint(0f, 0f, -6f), Tuple.NewPoint(0, 0, 0), Tuple.NewVector(0, 1, 0));
 
             var canvas = camera.Render(w, 5);
-            
+
             canvas.SaveAsJpeg("refraction.jpg");
         }
 
@@ -73,7 +73,7 @@ namespace SharpTrace
             right.Material.Specular = 0.3f;
 
             var left = new Sphere();
-            left.Transform = 
+            left.Transform =
                 Matrix.Translation(-1.5f, 0.33f, -0.75f) *
                 Matrix.Scaling(0.33f, 0.33f, 0.33f);
             left.Material.Color = new Color(1f, 0.8f, 0.1f);
@@ -88,7 +88,7 @@ namespace SharpTrace
             camera.Transform = Matrix.ViewTransform(Tuple.NewPoint(0f, 1.5f, -5f), Tuple.NewPoint(0, 1, 0), Tuple.NewVector(0, 1, 0));
 
             var canvas = camera.Render(w, 5);
-            
+
             canvas.SaveAsJpeg("Scene1.jpg");
         }
 
@@ -113,11 +113,12 @@ namespace SharpTrace
             var lightColor = Color.White;
             var light = new PointLight(lightPosition, lightColor);
 
-            for (int y = 0; y < canvasPixels; y++) 
+            for (int y = 0; y < canvasPixels; y++)
             {
                 var worldY = half - pixelSize * y;
 
-                Parallel.For(0, canvasPixels - 1, (x) => {
+                Parallel.For(0, canvasPixels - 1, (x) =>
+                {
                     var worldX = -half + pixelSize * x;
 
                     var wallPosition = Tuple.NewPoint(worldX, worldY, wallZ);
@@ -151,7 +152,8 @@ namespace SharpTrace
 
             var white = Color.White;
 
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 12; i++)
+            {
                 canvas[(int)clockPosition.x + (int)canvasCenter.x, (int)clockPosition.y + (int)canvasCenter.y] = white;
 
                 clockPosition = rotation * clockPosition;
@@ -160,13 +162,13 @@ namespace SharpTrace
             canvas.SaveAsJpeg("clock.jpg");
         }
 
-        private static void Trajectory() 
+        private static void Trajectory()
         {
             var canvas = new Canvas(1000, 1000);
 
             var projectile = new Projectile();
             projectile.Velocity = Tuple.NewVector(1.5f, 2f, 0);
-            
+
             while (projectile.Position.y >= 0.0f)
             {
                 Tick(projectile);
@@ -177,7 +179,7 @@ namespace SharpTrace
             canvas.SaveAsJpeg("trajectory.jpg");
         }
 
-        private static void Tick(Projectile projectile) 
+        private static void Tick(Projectile projectile)
         {
             var newPosition = projectile.Position + projectile.Velocity;
             var newVelocity = projectile.Velocity + _gravity + _wind;
@@ -194,6 +196,6 @@ namespace SharpTrace
     internal class Projectile
     {
         public Tuple Position { get; set; }
-        public Tuple Velocity { get; set; }        
-    }    
+        public Tuple Velocity { get; set; }
+    }
 }

@@ -58,7 +58,8 @@ namespace SharpTrace
 
             for (int y = 0; y < this.Height; y++)
             {
-                Parallel.For(0, this.Width - 1, (int x, ParallelLoopState loopState) => {
+                Parallel.For(0, this.Width - 1, (int x, ParallelLoopState loopState) =>
+                {
                     var r = this.RayForPixel(x, y);
                     var color = w.ColorAt(r, maxReflections);
                     image[x, y] = color;

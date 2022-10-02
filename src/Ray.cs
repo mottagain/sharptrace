@@ -37,7 +37,7 @@ namespace SharpTrace
             return result;
         }
 
-        public Ray Transform(Matrix m) 
+        public Ray Transform(Matrix m)
         {
             return new Ray(m * _origin, m * _direction);
         }

@@ -7,7 +7,7 @@ public class MaterialTests
     public void DefaultMaterial()
     {
         var m = new Material();
-        
+
         Assert.True(m.Color == Color.White, "Default color.");
         Assert.True(m.Ambient == 0.1f, "Default color.");
         Assert.True(m.Diffuse == 0.9f, "Default diffuse.");
@@ -126,7 +126,7 @@ public class MaterialTests
     }
 
     [Fact]
-    public void ReflectivityForDefaultMaterial() 
+    public void ReflectivityForDefaultMaterial()
     {
         var m = new Material();
 
@@ -134,7 +134,7 @@ public class MaterialTests
     }
 
     [Fact]
-    public void TransparencyAndRefractiveIndexDefaults() 
+    public void TransparencyAndRefractiveIndexDefaults()
     {
         var m = new Material();
 

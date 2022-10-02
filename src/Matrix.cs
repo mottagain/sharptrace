@@ -59,7 +59,7 @@ namespace SharpTrace
             return result;
         }
 
-        public static Matrix RotationX(double radians) 
+        public static Matrix RotationX(double radians)
         {
             Matrix result = Identity(4);
             result[1, 1] = (float)Math.Cos(radians);
@@ -69,7 +69,7 @@ namespace SharpTrace
             return result;
         }
 
-        public static Matrix RotationY(double radians) 
+        public static Matrix RotationY(double radians)
         {
             Matrix result = Identity(4);
             result[0, 0] = (float)Math.Cos(radians);
@@ -79,7 +79,7 @@ namespace SharpTrace
             return result;
         }
 
-        public static Matrix RotationZ(double radians) 
+        public static Matrix RotationZ(double radians)
         {
             Matrix result = Identity(4);
             result[0, 0] = (float)Math.Cos(radians);
@@ -89,14 +89,14 @@ namespace SharpTrace
             return result;
         }
 
-        public static Matrix Shearing(float xy, float xz, float yx, float yz, float zx, float zy) 
+        public static Matrix Shearing(float xy, float xz, float yx, float yz, float zx, float zy)
         {
             Matrix result = Identity(4);
             result[0, 1] = xy;
             result[0, 2] = xz;
             result[1, 0] = yx;
             result[1, 2] = yz;
-            result[2, 0] = zx; 
+            result[2, 0] = zx;
             result[2, 1] = zy;
             return result;
         }

@@ -2,7 +2,7 @@
 namespace SharpTrace
 {
     using System.Diagnostics;
-    
+
     public class Sphere : Shape
     {
         public Sphere(Material? material = null) : base(material)

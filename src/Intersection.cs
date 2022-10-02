@@ -43,7 +43,8 @@ namespace SharpTrace
             if (xs != null)
             {
                 var containers = new List<Shape>();
-                foreach(var intersection in xs) {
+                foreach (var intersection in xs)
+                {
                     if (intersection == this)
                     {
                         result.N1 = containers.Count == 0 ? 1.0f : containers.Last().Material.RefractiveIndex;
@@ -57,7 +58,8 @@ namespace SharpTrace
                     {
                         containers.Add(intersection.Object);
                     }
-                    if (intersection == this) {
+                    if (intersection == this)
+                    {
                         result.N2 = containers.Count == 0 ? 1.0f : containers.Last().Material.RefractiveIndex;
                         break;
                     }
@@ -126,7 +128,7 @@ namespace SharpTrace
             }
         }
 
-        public Tuple UnderPoint 
+        public Tuple UnderPoint
         {
             get
             {
@@ -187,17 +189,17 @@ namespace SharpTrace
 
         public bool Inside { get; set; }
 
-        public float Schlick() 
+        public float Schlick()
         {
             // Find the Cosine of the angle between the eye and normal vectors
             var cos = Tuple.Dot(this.EyeVector, this.NormalVector);
 
             // Total internal reflection can only occur if n1 > n2
-            if (this.N1 > this.N2) 
+            if (this.N1 > this.N2)
             {
                 var n = this.N1 / this.N2;
                 var sin2_t = n * n * (1f - cos * cos);
-                if (sin2_t > 1f) 
+                if (sin2_t > 1f)
                 {
                     return 1f;
                 }
